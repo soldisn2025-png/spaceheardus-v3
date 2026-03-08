@@ -3,12 +3,13 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { links } from '@/content/links'
 
 const navLinks = [
   { href: '/', label: 'Home' },
-  { href: '/meet-the-players', label: 'Meet the Players' },
-  { href: '/events', label: 'Events' },
-  { href: 'https://www.signupgenius.com/PLACEHOLDER', label: 'Volunteer', external: true },
+  { href: '/team', label: 'Team' },
+  { href: '/schedule', label: 'Schedule' },
+  { href: links.volunteer, label: 'Volunteer Form', external: true },
 ]
 
 export default function Header() {

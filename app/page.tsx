@@ -1,9 +1,11 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import siteContent from '@/content/site-content.json'
+import { teamMembers } from '@/content/team'
+import { links } from '@/content/links'
 
 export default function HomePage() {
-  const { home, players } = siteContent
+  const { home } = siteContent
 
   return (
     <>
@@ -41,13 +43,13 @@ export default function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-up animate-fade-up-delay-4">
             <Link
-              href="/events"
+              href="/schedule"
               className="px-8 py-4 bg-amber-400 text-black font-bold rounded-full hover:bg-amber-300 transition-all hover:scale-105 shadow-lg shadow-amber-500/25"
             >
               Watch Us Perform
             </Link>
             <Link
-              href="/meet-the-players"
+              href="/team"
               className="px-8 py-4 border border-white/20 text-white rounded-full hover:bg-white/5 transition-all"
             >
               Meet the Players
@@ -83,11 +85,11 @@ export default function HomePage() {
             <p className="text-white/50 font-inter">Three young musicians, one powerful mission</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {players.map((player) => (
+            {teamMembers.map((player) => (
               <div key={player.id} className="group text-center">
                 <div className="relative w-44 h-44 mx-auto mb-5 rounded-full overflow-hidden ring-2 ring-white/10 group-hover:ring-amber-400/50 transition-all duration-300">
                   <Image
-                    src={player.photo}
+                    src={player.image}
                     alt={player.name}
                     fill
                     className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
@@ -95,13 +97,13 @@ export default function HomePage() {
                 </div>
                 <h3 className="font-playfair text-xl font-bold mb-1">{player.name}</h3>
                 <p className="text-amber-400 text-sm font-semibold font-inter mb-3">{player.role}</p>
-                <p className="text-white/50 text-sm font-inter leading-relaxed px-4 line-clamp-3">{player.bio}</p>
+                <p className="text-white/50 text-sm font-inter leading-relaxed px-4 line-clamp-3">{player.shortBio}</p>
               </div>
             ))}
           </div>
           <div className="text-center mt-12">
             <Link
-              href="/meet-the-players"
+              href="/team"
               className="inline-block px-8 py-3 border border-white/20 rounded-full text-white/70 hover:text-white hover:border-white/40 transition-all font-inter text-sm"
             >
               Read Their Full Stories →
@@ -139,7 +141,7 @@ export default function HomePage() {
             Join our team of volunteers and be part of something meaningful.
           </p>
           <a
-            href="https://www.signupgenius.com/PLACEHOLDER"
+            href={links.volunteer}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block px-10 py-4 bg-amber-400 text-black font-bold rounded-full hover:bg-amber-300 transition-all hover:scale-105 shadow-lg shadow-amber-500/25"
