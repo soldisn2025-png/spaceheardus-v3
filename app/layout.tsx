@@ -1,41 +1,26 @@
-import type { Metadata } from 'next';
-import { Inter, Crimson_Pro } from 'next/font/google';
-import './globals.css';
-import { Layout } from '@/components/layout';
-import { site } from '@/content/site';
+import type { Metadata } from "next"
+import { Playfair_Display, Inter } from "next/font/google"
+import "./globals.css"
+import Header from "@/components/Header"
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-});
-
-const crimson = Crimson_Pro({
-  subsets: ['latin'],
-  variable: '--font-crimson',
-  display: 'swap',
-});
+const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair", display: "swap" })
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" })
 
 export const metadata: Metadata = {
-  title: { default: `${site.name} | ${site.tagline}`, template: `%s | ${site.name}` },
-  description: site.description,
-  openGraph: {
-    title: site.name,
-    description: site.description,
-    type: 'website',
-    // Add your domain when live: url: `https://${site.domain}`,
-    // images: [{ url: '/images/og-image.jpg', width: 1200, height: 630, alt: site.name }],
-  },
-  twitter: { card: 'summary_large_image' },
-  robots: { index: true, follow: true },
-};
+  title: "Space Heard Us | Youth Nonprofit Band",
+  description: "A youth nonprofit band using music to spread joy and support communities.",
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${crimson.variable}`}>
-      <body>
-        <Layout>{children}</Layout>
+    <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
+      <body className="bg-[#0a0a0f] text-white antialiased">
+        <Header />
+        <main className="pt-16">{children}</main>
+        <footer className="border-t border-white/10 py-10 text-center text-white/40 text-sm">
+          © {new Date().getFullYear()} Space Heard Us · Youth Nonprofit Band
+        </footer>
       </body>
     </html>
-  );
+  )
 }
