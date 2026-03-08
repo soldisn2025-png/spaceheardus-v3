@@ -18,7 +18,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <main className="pt-16">{children}</main>
         <footer className="border-t border-white/10 py-10 text-center text-white/40 text-sm">
-          © {new Date().getFullYear()} Space Heard Us · Youth Nonprofit Band
+          2025 Space Heard Us - Youth Nonprofit Band
         </footer>
       </body>
     </html>
