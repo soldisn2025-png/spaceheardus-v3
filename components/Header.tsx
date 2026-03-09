@@ -22,7 +22,7 @@ export default function Header() {
   const pathname = usePathname()
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0f]/90 backdrop-blur-md border-b border-white/10">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#fffdf6]/90 backdrop-blur-md border-b border-amber-200">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 group">
           <div className="w-10 h-10 rounded-full bg-white/95 flex items-center justify-center overflow-hidden shadow-lg">
@@ -39,7 +39,7 @@ export default function Header() {
               <span className="text-black font-black text-base">S</span>
             )}
           </div>
-          <span className="font-bold text-white text-lg tracking-tight group-hover:text-amber-400 transition-colors">
+          <span className="font-bold text-stone-900 text-lg tracking-tight group-hover:text-amber-700 transition-colors">
             Space Heard Us
           </span>
         </Link>
@@ -66,8 +66,8 @@ export default function Header() {
                 href={link.href}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                   isActive
-                    ? 'bg-white/10 text-white'
-                    : 'text-white/70 hover:text-white hover:bg-white/5'
+                    ? 'bg-amber-100 text-amber-900'
+                    : 'text-stone-700 hover:text-stone-900 hover:bg-amber-50'
                 }`}
               >
                 {link.label}
@@ -77,7 +77,7 @@ export default function Header() {
         </nav>
 
         <button
-          className="md:hidden text-white/80 hover:text-white"
+          className="md:hidden text-stone-700 hover:text-stone-900"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
@@ -90,7 +90,7 @@ export default function Header() {
       </div>
 
       {menuOpen && (
-        <div className="md:hidden bg-[#0a0a0f] border-t border-white/10 px-6 py-4 flex flex-col gap-2">
+        <div className="md:hidden bg-[#fffdf6] border-t border-amber-200 px-6 py-4 flex flex-col gap-2">
           {navLinks.map((link) => {
             if (link.external) {
               return (
@@ -111,7 +111,7 @@ export default function Header() {
                 key={link.label}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className="px-4 py-3 rounded-xl text-white/80 hover:text-white hover:bg-white/5 transition-colors"
+                className="px-4 py-3 rounded-xl text-stone-700 hover:text-stone-900 hover:bg-amber-50 transition-colors"
               >
                 {link.label}
               </Link>

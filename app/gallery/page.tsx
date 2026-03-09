@@ -12,8 +12,8 @@ export default function GalleryPage() {
     <div className="min-h-screen">
       <section className="py-24 px-6 text-center">
         <div className="max-w-4xl mx-auto">
-          <h1 className="font-playfair text-5xl md:text-6xl font-bold mb-4">{galleryContent.title}</h1>
-          <p className="text-white/55 text-lg">{galleryContent.subtitle}</p>
+          <h1 className="font-playfair text-5xl md:text-6xl text-stone-900 font-bold mb-4">{galleryContent.title}</h1>
+          <p className="text-stone-600 text-lg">{galleryContent.subtitle}</p>
         </div>
       </section>
 
@@ -22,7 +22,7 @@ export default function GalleryPage() {
           {galleryContent.videos.map((video) => {
             const embedUrl = toYouTubeEmbed(video.url)
             return (
-              <article key={video.id} className="rounded-2xl border border-white/10 bg-white/[0.03] overflow-hidden">
+              <article key={video.id} className="rounded-2xl border border-amber-100 bg-white overflow-hidden shadow-sm">
                 <div className="relative w-full aspect-video bg-black">
                   {embedUrl ? (
                     <iframe
@@ -34,11 +34,11 @@ export default function GalleryPage() {
                       allowFullScreen
                     />
                   ) : (
-                    <div className="absolute inset-0 flex items-center justify-center text-white/50 text-sm">Invalid YouTube URL</div>
+                    <div className="absolute inset-0 flex items-center justify-center text-white/70 text-sm">Invalid YouTube URL</div>
                   )}
                 </div>
                 <div className="p-4">
-                  <h2 className="font-playfair text-2xl font-bold">{video.title}</h2>
+                  <h2 className="font-playfair text-2xl text-stone-900 font-bold">{video.title}</h2>
                 </div>
               </article>
             )
@@ -49,11 +49,11 @@ export default function GalleryPage() {
       <section className="px-6 pb-24">
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {galleryContent.photos.map((photo) => (
-            <figure key={photo.id} className="rounded-2xl overflow-hidden border border-white/10 bg-white/[0.03]">
+            <figure key={photo.id} className="rounded-2xl overflow-hidden border border-amber-100 bg-white shadow-sm">
               <div className="relative w-full aspect-square">
                 <Image src={photo.src} alt={photo.alt} fill className="object-cover" />
               </div>
-              <figcaption className="px-4 py-3 text-sm text-white/70">{photo.caption}</figcaption>
+              <figcaption className="px-4 py-3 text-sm text-stone-600">{photo.caption}</figcaption>
             </figure>
           ))}
         </div>

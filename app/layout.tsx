@@ -33,12 +33,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
-      <body className="bg-[#0a0a0f] text-white antialiased">
+      <body className="bg-[#fffdf6] text-stone-900 antialiased">
         <Header />
-        <main className="pt-16">
-          {children}
-        </main>
-        <footer className="border-t border-white/10 py-10 text-center text-white/40 text-sm font-inter">
+        <main className="pt-16">{children}</main>
+        <footer className="border-t border-amber-200 py-10 text-center text-stone-600 text-sm font-inter">
           <p>© {new Date().getFullYear()} Space Heard Us · Youth Nonprofit Band · All Rights Reserved</p>
         </footer>
       </body>
