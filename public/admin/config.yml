@@ -1,7 +1,3 @@
-# Space Heard Us — Decap CMS config
-# After saving here, go to https://yoursite.com/admin/ to edit content.
-# You will log in with GitHub; changes commit to the repo and trigger a new deploy.
-
 backend:
   name: github
   repo: soldisn2025-png/spaceheardus-v3
@@ -9,46 +5,71 @@ backend:
 
 media_folder: "public/images"
 public_path: "/images"
-
 locale: "en"
-
 publish_mode: simple
 
 collections:
-  - name: site
-    label: Site settings
-    file: "content/site.json"
+  - name: site_content
+    label: Home Content
+    file: "content/site-content.json"
     fields:
-      - { label: Name, name: name, widget: string }
-      - { label: Tagline, name: tagline, widget: string }
-      - { label: Domain, name: domain, widget: string }
-      - { label: Email, name: email, widget: string }
-      - { label: Secondary email, name: emailSecondary, widget: string }
-      - { label: Phone, name: phone, widget: string, required: false }
-      - { label: Address, name: address, widget: string, required: false }
-      - { label: Description, name: description, widget: text }
-      - { label: Founded, name: founded, widget: string }
-      - { label: Nonprofit notice, name: nonprofitNotice, widget: string }
+      - label: Site
+        name: site
+        widget: object
+        fields:
+          - { label: Name, name: name, widget: string }
+          - { label: Tagline, name: tagline, widget: string }
+          - { label: Description, name: description, widget: text }
+          - { label: Logo, name: logo, widget: image }
+      - label: Home
+        name: home
+        widget: object
+        fields:
+          - { label: Hero title, name: heroTitle, widget: string }
+          - { label: Hero subtitle, name: heroSubtitle, widget: text }
+          - { label: Mission title, name: missionTitle, widget: string }
+          - { label: Mission text, name: missionText, widget: text }
+          - { label: Featured video title, name: featuredVideoTitle, widget: string }
+          - { label: Featured YouTube URL, name: featuredVideoUrl, widget: string }
+          - { label: Volunteer section title, name: volunteerTitle, widget: string }
+          - { label: Volunteer section text, name: volunteerText, widget: text }
+          - { label: Contact section title, name: contactTitle, widget: string }
+          - { label: Contact section text, name: contactText, widget: text }
+
+  - name: links
+    label: Links
+    file: "content/links.json"
+    fields:
+      - { label: Donate URL, name: donate, widget: string }
+      - { label: Volunteer URL, name: volunteer, widget: string }
+      - { label: Contact form action URL, name: contactForm, widget: string }
+      - label: Social
+        name: social
+        widget: object
+        fields:
+          - { label: Facebook, name: facebook, widget: string, required: false }
+          - { label: Instagram, name: instagram, widget: string, required: false }
+          - { label: YouTube, name: youtube, widget: string, required: false }
+          - { label: Twitter, name: twitter, widget: string, required: false }
 
   - name: team
     label: Team
     file: "content/team.json"
-    description: "Team member order is determined by the order field (1, 2, 3...)."
     fields:
       - label: Members
         name: members
         widget: list
         fields:
-          - { label: ID, name: id, widget: string, hint: "Lowercase, e.g. courtney-lee" }
+          - { label: ID, name: id, widget: string }
           - { label: Name, name: name, widget: string }
-          - { label: Role, name: role, widget: string, hint: "e.g. Leader & Violin, Piano" }
+          - { label: Role, name: role, widget: string }
           - { label: Short bio, name: shortBio, widget: text }
           - { label: Extended story, name: extendedStory, widget: text, required: false }
-          - { label: Image, name: image, widget: image, hint: "Upload or use path like /images/team/name.png" }
+          - { label: Image, name: image, widget: image }
           - { label: Order, name: order, widget: number }
 
   - name: events
-    label: Events
+    label: Schedule Events
     file: "content/events.json"
     fields:
       - label: Events
@@ -57,7 +78,7 @@ collections:
         fields:
           - { label: ID, name: id, widget: string }
           - { label: Title, name: title, widget: string }
-          - { label: Date, name: date, widget: string, hint: "YYYY-MM-DD" }
+          - { label: Date, name: date, widget: string }
           - { label: Time, name: time, widget: string }
           - { label: Location, name: location, widget: string }
           - { label: Location detail, name: locationDetail, widget: string, required: false }
@@ -65,4 +86,38 @@ collections:
           - { label: Type, name: type, widget: select, options: [performance, rehearsal, community, other] }
           - { label: RSVP link, name: rsvpLink, widget: string, required: false }
           - { label: RSVP label, name: rsvpLabel, widget: string, required: false }
-          - { label: Coming soon?, name: isComingSoon, widget: boolean, default: false, required: false }
+          - { label: Coming soon, name: isComingSoon, widget: boolean, required: false }
+
+  - name: events_media
+    label: Schedule Media
+    file: "content/events-media.json"
+    fields:
+      - label: Group photo
+        name: groupPhoto
+        widget: object
+        fields:
+          - { label: Source, name: src, widget: image }
+          - { label: Alt text, name: alt, widget: string }
+          - { label: Caption, name: caption, widget: string, required: false }
+
+  - name: gallery_page
+    label: Gallery
+    file: "content/gallery-page.json"
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Subtitle, name: subtitle, widget: text }
+      - label: Videos
+        name: videos
+        widget: list
+        fields:
+          - { label: ID, name: id, widget: string }
+          - { label: Title, name: title, widget: string }
+          - { label: YouTube URL, name: url, widget: string }
+      - label: Photos
+        name: photos
+        widget: list
+        fields:
+          - { label: ID, name: id, widget: string }
+          - { label: Image, name: src, widget: image }
+          - { label: Alt text, name: alt, widget: string }
+          - { label: Caption, name: caption, widget: string, required: false }

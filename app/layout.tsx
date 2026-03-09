@@ -18,6 +18,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Space Heard Us | Youth Nonprofit Band',
   description: 'A youth nonprofit band using music to spread joy and support communities.',
+  metadataBase: new URL('https://spaceheardus.org'),
   openGraph: {
     title: 'Space Heard Us',
     description: 'Music That Moves Hearts',

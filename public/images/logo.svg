@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Space Heard Us logo">
+  <defs>
+    <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#f5f5f5" />
+      <stop offset="1" stop-color="#dbdbdb" />
+    </linearGradient>
+  </defs>
+  <path d="M60 8c18 0 35 5 49 14v34c0 24-17 44-49 56C28 100 11 80 11 56V22C25 13 42 8 60 8z" fill="url(#g)" stroke="#0f0f0f" stroke-width="5"/>
+  <path d="M75 29c-4-3-9-5-16-5-11 0-19 6-19 15 0 11 9 14 19 17 9 3 13 5 13 10 0 5-4 8-11 8-7 0-12-2-16-6l-8 9c5 5 13 8 24 8 14 0 24-8 24-19 0-12-9-16-20-19-8-2-12-4-12-8 0-4 4-7 10-7 6 0 10 2 13 4l9-7z" fill="#0f0f0f"/>
+  <circle cx="92" cy="38" r="4" fill="#0f0f0f"/>
+  <circle cx="26" cy="64" r="5" fill="#0f0f0f"/>
+  <path d="M22 73c13-10 28-15 46-14 13 1 24 4 35 10" fill="none" stroke="#0f0f0f" stroke-width="3" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,36 @@
+{
+  "title": "Gallery",
+  "subtitle": "Photos and videos from our performances and community moments.",
+  "videos": [
+    {
+      "id": "gallery-video-1",
+      "title": "Performance Clip 1",
+      "url": "https://www.youtube.com/watch?v=qRDn5o-LLfg"
+    },
+    {
+      "id": "gallery-video-2",
+      "title": "Performance Clip 2",
+      "url": "https://www.youtube.com/watch?v=9urKJ-CDVEY"
+    }
+  ],
+  "photos": [
+    {
+      "id": "cute-1",
+      "src": "/images/gallery/cute-1.svg",
+      "alt": "Cute placeholder 1",
+      "caption": "Placeholder photo 1"
+    },
+    {
+      "id": "cute-2",
+      "src": "/images/gallery/cute-2.svg",
+      "alt": "Cute placeholder 2",
+      "caption": "Placeholder photo 2"
+    },
+    {
+      "id": "cute-3",
+      "src": "/images/gallery/cute-3.svg",
+      "alt": "Cute placeholder 3",
+      "caption": "Placeholder photo 3"
+    }
+  ]
+}

@@ -3,66 +3,18 @@
     "name": "Space Heard Us",
     "tagline": "Music That Moves Hearts",
     "description": "We are a youth nonprofit band on a mission to spread joy through music and support those in need.",
-    "volunteerUrl": "https://www.signupgenius.com/PLACEHOLDER"
+    "logo": "/images/logo.svg"
   },
   "home": {
     "heroTitle": "Music That Moves Hearts",
-    "heroSubtitle": "Space Heard Us is a youth nonprofit band dedicated to using music as a force for good — performing for communities, raising awareness, and inspiring change.",
+    "heroSubtitle": "Space Heard Us is a youth nonprofit band dedicated to using music as a force for good, performing for communities and inspiring change.",
     "missionTitle": "Our Mission",
-    "missionText": "We believe music has the power to heal, connect, and transform. Through performances and community events, we bring joy to those who need it most and raise awareness for causes close to our hearts.",
-    "ctaText": "Join Our Journey"
-  },
-  "players": [
-    {
-      "id": "courtney",
-      "name": "Courtney Lee",
-      "role": "Leader · Violin",
-      "photo": "/images/courtney.jpg",
-      "bio": "Courtney is the heart and soul of Space Heard Us. As our leader and violinist, she brings passion, precision, and warmth to every performance. Her dedication to the band's mission of using music for good inspires everyone around her."
-    },
-    {
-      "id": "kaden",
-      "name": "Kaden Joo",
-      "role": "Member · Piano",
-      "photo": "/images/kaden.jpg",
-      "bio": "Kaden's piano melodies are the backbone of our sound. With a natural gift for harmony and rhythm, he brings an emotional depth to every song that resonates deeply with our audiences."
-    },
-    {
-      "id": "eric",
-      "name": "Eric Kim",
-      "role": "Member · Singer & Percussion",
-      "photo": "/images/eric.jpg",
-      "bio": "Eric's powerful voice and energetic percussion bring the band to life on stage. His enthusiasm and commitment to every performance make him an unforgettable presence wherever Space Heard Us plays."
-    }
-  ],
-  "events": {
-    "pageTitle": "Our Performances",
-    "pageSubtitle": "Watch us in action and join us at our next event",
-    "groupPhotoCaption": "Space Heard Us at our Holiday Concert 2024",
-    "videos": [
-      {
-        "id": "video1",
-        "title": "Holiday Concert Performance",
-        "description": "Our heartfelt holiday performance for the community.",
-        "src": "/videos/performance1.mp4",
-        "poster": "/images/group.jpg"
-      },
-      {
-        "id": "video2",
-        "title": "Spring Benefit Concert",
-        "description": "Raising funds and spirits at our spring benefit show.",
-        "src": "/videos/performance2.mp4",
-        "poster": "/images/group.jpg"
-      }
-    ],
-    "upcomingEvents": [
-      {
-        "id": "evt1",
-        "title": "Spring Community Concert",
-        "date": "April 20, 2025",
-        "location": "Community Center, Fairfax VA",
-        "description": "Join us for a free spring concert benefiting local charities."
-      }
-    ]
+    "missionText": "We believe music has the power to heal, connect, and transform. Through performances and community events, we bring joy to those who need it most.",
+    "featuredVideoTitle": "Featured Performance",
+    "featuredVideoUrl": "https://www.youtube.com/watch?v=oxEf0g8dNFU&list=PLDvad3co7K4iDnqgwv1mUq7f5hnjLGwVV",
+    "volunteerTitle": "Want to Help?",
+    "volunteerText": "Join our team of volunteers and be part of something meaningful.",
+    "contactTitle": "Contact Us",
+    "contactText": "Send us a message for performances, collaboration, or volunteer questions."
   }
 }

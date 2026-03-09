@@ -6,11 +6,10 @@ export const navigation = {
   main: [
     { label: 'Home', href: '/' },
     { label: 'Team', href: '/team' },
-    { label: 'Schedule', href: '/schedule' },
     { label: 'Gallery', href: '/gallery' },
+    { label: 'Schedule', href: '/schedule' },
     { label: 'Donation', href: '/donation' },
     { label: 'Volunteer Form', external: true, linkKey: 'volunteer' as const },
-    { label: 'Connect', href: '/connect' },
   ],
   cta: {
     donate: { label: 'Donate', href: '/donation' },

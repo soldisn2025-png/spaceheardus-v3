@@ -1,0 +1,11 @@
+{
+  "donate": "https://example.com/donate",
+  "volunteer": "https://www.signupgenius.com/go/your-actual-form",
+  "contactForm": "https://formspree.io/f/your-form-id",
+  "social": {
+    "facebook": "",
+    "instagram": "",
+    "youtube": "",
+    "twitter": ""
+  }
+}
