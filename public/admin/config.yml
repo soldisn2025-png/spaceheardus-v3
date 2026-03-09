@@ -40,7 +40,9 @@ collections:
     label: Links
     file: "content/links.json"
     fields:
-      - { label: Donate URL, name: donate, widget: string }
+      - { label: Default donate URL, name: donate, widget: string, hint: "Optional fallback. Usually same as Zeffy." }
+      - { label: Zeffy URL, name: zeffy, widget: string }
+      - { label: PayPal Donate URL, name: paypalDonate, widget: string }
       - { label: Volunteer URL, name: volunteer, widget: string }
       - { label: Contact form action URL, name: contactForm, widget: string }
       - label: Social
