@@ -1,9 +1,9 @@
-{
+﻿{
   "site": {
     "name": "Space Heard Us",
     "tagline": "Music That Moves Hearts",
     "description": "We are a youth nonprofit band on a mission to spread joy through music and support those in need.",
-    "logo": "/images/logo.svg"
+    "logo": "/images/logo.jpg"
   },
   "home": {
     "heroTitle": "Music That Moves Hearts",
@@ -18,3 +18,5 @@
     "contactText": "Send us a message for performances, collaboration, or volunteer questions."
   }
 }
+
+
