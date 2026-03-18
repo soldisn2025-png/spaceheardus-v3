@@ -1,21 +1,21 @@
 ﻿{
   "site": {
     "name": "Space Heard Us",
-    "tagline": "Music That Moves Hearts",
-    "description": "We are a youth nonprofit band on a mission to spread joy through music and support those in need.",
+    "tagline": "Every Voice Deserves to Be Heard",
+    "description": "An inclusive youth nonprofit band in Fairfax, VA, celebrating the gifts of children with disabilities through the power of music.",
     "logo": "/images/logo.jpg"
   },
   "home": {
-    "heroTitle": "Music That Moves Hearts",
-    "heroSubtitle": "Space Heard Us is a youth nonprofit band dedicated to using music as a force for good, performing for communities and inspiring change.",
+    "heroTitle": "Every Voice Deserves to Be Heard",
+    "heroSubtitle": "Space Heard Us is an inclusive youth nonprofit band in Fairfax, VA. Eric and Kaden — musicians with autism — perform for churches, hospitals, daycares, and communities across Northern Virginia.",
     "missionTitle": "Our Mission",
-    "missionText": "We believe music has the power to heal, connect, and transform. Through performances and community events, we bring joy to those who need it most.",
+    "missionText": "To spread hope through music with a group that includes children with and without autism — celebrating every voice, serving our community, and showing the world what kids with disabilities can do.",
     "featuredVideoTitle": "Featured Performance",
     "featuredVideoUrl": "https://www.youtube.com/watch?v=oxEf0g8dNFU&list=PLDvad3co7K4iDnqgwv1mUq7f5hnjLGwVV",
     "volunteerTitle": "Want to Help?",
-    "volunteerText": "Join our team of volunteers and be part of something meaningful.",
-    "contactTitle": "Contact Us",
-    "contactText": "Send us a message for performances, collaboration, or volunteer questions."
+    "volunteerText": "Join our team and help us bring inclusive music to more families, hospitals, and communities across Northern Virginia.",
+    "contactTitle": "Get in Touch",
+    "contactText": "Questions about performances, volunteering, or how to get involved? We'd love to hear from you."
   }
 }
 

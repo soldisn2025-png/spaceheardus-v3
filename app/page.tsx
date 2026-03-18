@@ -1,8 +1,18 @@
+import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import siteContent from '@/content/site-content.json'
 import { teamMembers } from '@/content/team'
 import { links } from '@/content/links'
+
+export const metadata: Metadata = {
+  title: 'Space Heard Us | Inclusive Youth Nonprofit Band in Fairfax, VA',
+  description:
+    'Space Heard Us is an inclusive youth nonprofit band in Fairfax, Virginia. Eric and Kaden — musicians with autism — perform at churches, hospitals, daycares, and community events across Northern Virginia.',
+  alternates: {
+    canonical: 'https://spaceheardus.org',
+  },
+}
 
 function toYouTubeEmbed(url: string) {
   const match = url.match(/(?:v=|youtu\.be\/)([^&?/]+)/)
@@ -53,6 +63,47 @@ export default function HomePage() {
           <h2 className="font-playfair text-4xl md:text-5xl text-stone-900 font-bold mb-6">{home.missionTitle}</h2>
           <div className="w-16 h-1 bg-amber-500 mx-auto mb-8 rounded-full" />
           <p className="text-stone-700 text-lg md:text-xl leading-relaxed font-inter">{home.missionText}</p>
+        </div>
+      </section>
+
+      <section className="py-16 px-6 border-b border-amber-200">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="font-playfair text-3xl md:text-4xl text-stone-900 font-bold mb-3">How Can We Help You?</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white rounded-3xl p-8 border border-amber-200 shadow-sm flex flex-col">
+              <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mb-5">
+                <svg className="w-6 h-6 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <h3 className="font-playfair text-2xl text-stone-900 font-bold mb-3">I&apos;m a Parent or Family</h3>
+              <p className="text-stone-600 font-inter leading-relaxed mb-6 flex-1">
+                Discover how Eric and Kaden — young musicians with autism — are showing what&apos;s possible.
+                Find inspiration and connect with our inclusive community in Northern Virginia.
+              </p>
+              <Link href="/team" className="inline-block px-6 py-3 bg-amber-500 text-white font-bold rounded-full hover:bg-amber-600 transition-all text-center">
+                Meet the Band
+              </Link>
+            </div>
+
+            <div className="bg-white rounded-3xl p-8 border border-amber-200 shadow-sm flex flex-col">
+              <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mb-5">
+                <svg className="w-6 h-6 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                </svg>
+              </div>
+              <h3 className="font-playfair text-2xl text-stone-900 font-bold mb-3">Book a Performance</h3>
+              <p className="text-stone-600 font-inter leading-relaxed mb-6 flex-1">
+                We perform at churches, hospitals, daycares, and community events across Fairfax, VA and
+                Northern Virginia. Bring the joy of inclusive music to your venue.
+              </p>
+              <Link href="/book" className="inline-block px-6 py-3 bg-amber-500 text-white font-bold rounded-full hover:bg-amber-600 transition-all text-center">
+                Request a Performance
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
