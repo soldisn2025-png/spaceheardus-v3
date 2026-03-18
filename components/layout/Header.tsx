@@ -1,16 +1,13 @@
 'use client';
-
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { navigation } from '@/content/navigation';
 import { site } from '@/content/site';
 import { links } from '@/content/links';
-
 export function Header() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
-
   return (
     <header className="sticky top-0 z-50 w-full border-b border-stone-200/80 bg-white/95 backdrop-blur-md supports-[backdrop-filter]:bg-white/80">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
@@ -21,7 +18,6 @@ export function Header() {
         >
           {site.name}
         </Link>
-
         <nav className="hidden md:flex md:items-center md:gap-1" aria-label="Main navigation">
           {navigation.main.map((item) => {
             const isExternal = 'external' in item && item.external && 'linkKey' in item;
@@ -53,7 +49,6 @@ export function Header() {
             );
           })}
         </nav>
-
         <div className="hidden md:flex md:items-center md:gap-2">
           <Link
             href={links.volunteer || '/connect#volunteer'}
@@ -67,8 +62,13 @@ export function Header() {
           >
             Donate
           </Link>
+          <Link
+            href="/admin-panel"
+            className="rounded-lg px-2 py-1 text-xs font-medium text-stone-400 hover:text-stone-600 hover:bg-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2 transition-colors"
+          >
+            Admin
+          </Link>
         </div>
-
         <button
           type="button"
           className="md:hidden rounded-lg p-2 text-stone-600 hover:bg-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-400"
@@ -88,7 +88,6 @@ export function Header() {
           )}
         </button>
       </div>
-
       <div
         id="mobile-menu"
         className={`md:hidden border-t border-stone-200 bg-white ${mobileOpen ? 'block' : 'hidden'}`}
@@ -141,6 +140,13 @@ export function Header() {
               className="rounded-xl bg-amber-500 px-4 py-3 text-center text-base font-semibold text-white"
             >
               Donate
+            </Link>
+            <Link
+              href="/admin-panel"
+              onClick={() => setMobileOpen(false)}
+              className="rounded-lg px-4 py-3 text-base font-medium text-stone-400 hover:bg-stone-50"
+            >
+              Admin
             </Link>
           </div>
         </nav>
