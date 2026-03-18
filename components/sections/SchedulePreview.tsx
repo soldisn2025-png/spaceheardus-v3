@@ -4,19 +4,17 @@ import { SectionHeading } from '@/components/ui/SectionHeading';
 import { CTA } from '@/components/ui/CTA';
 
 function formatDate(dateStr: string) {
-  try {
-    const d = new Date(dateStr);
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-  } catch {
+  const parsed = new Date(dateStr);
+
+  if (Number.isNaN(parsed.getTime())) {
     return dateStr;
   }
+
+  return parsed.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
 export function SchedulePreview() {
-  const upcoming = events
-    .filter((e) => !e.isComingSoon)
-    .sort((a, b) => (a.date > b.date ? 1 : -1))
-    .slice(0, 3);
+  const upcoming = events.slice(0, 3);
 
   return (
     <section className="bg-stone-50 py-16 sm:py-20">
@@ -41,7 +39,7 @@ export function SchedulePreview() {
                 <div>
                   <p className="text-sm font-medium text-amber-700">{e.type}</p>
                   <h3 className="text-lg font-semibold text-stone-900">{e.title}</h3>
-                  <p className="text-stone-600">{formatDate(e.date)} · {e.time}</p>
+                  <p className="text-stone-600">{formatDate(e.date)} | {e.time}</p>
                   <p className="text-stone-500">{e.location}</p>
                 </div>
                 <Link

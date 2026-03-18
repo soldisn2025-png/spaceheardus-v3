@@ -1,31 +1,45 @@
-# Admin — Edit content without touching code
+# Admin Panel Setup
 
-You can edit **site settings**, **team members**, and **events** (and swap photos) from the browser.
+The site now includes a custom admin panel at `/admin-panel`.
 
-## How to open the admin
+## What the admin can edit
 
-1. Deploy your site to Cloudflare (or run it locally).
-2. Open: **https://yoursite.com/admin/**  
-   (e.g. `https://spaceheardus.org/admin/` or `https://space-heard-us.pages.dev/admin/`)
+- Homepage picture
+- Hero statement
+- Mission statement
+- Featured YouTube section title
+- Featured YouTube link
 
-## First-time setup (GitHub login)
+## Required environment variables
 
-1. Go to **https://yoursite.com/admin/**.
-2. Click **Login with GitHub**.
-3. Authorize Decap CMS to access your repo (`soldisn2025-png/spaceheardus-v3`).
-4. You’ll see collections: **Site settings**, **Team**, **Events**.
+Add these values in your local `.env` file and in your hosting provider:
 
-## What you can edit
+```env
+ADMIN_ID=your-admin-id
+ADMIN_PASSWORD=your-strong-password
+ADMIN_JWT_SECRET=replace-this-with-a-long-random-secret
+GITHUB_TOKEN=github-personal-access-token
+GITHUB_REPO=soldisn2025-png/spaceheardus-v3
+GITHUB_BRANCH=main
+```
 
-- **Site settings** — Name, tagline, email, phone, description, etc. (from `content/site.json`).
-- **Team** — Add/remove/reorder members, change names, roles, bios, and **photos** (from `content/team.json`).  
-  Upload a new image and it’s saved under `public/images`; the path is set automatically.
-- **Events** — Add/edit/remove events, dates, locations, RSVP links (from `content/events.json`).
+## GitHub token permissions
 
-After you click **Publish**, changes are committed to GitHub. If the site is connected to Cloudflare Pages, a new deploy will run and the site updates in a few minutes.
+The `GITHUB_TOKEN` should be a personal access token that can update the repo contents.
+Make sure it can write to `content/site-content.json` and upload files under `public/images/admin/`.
 
-## Repo and config
+## How it works
 
-- Admin config: `public/admin/config.yml`.  
-  To add more editable sections or fields, edit that file and the matching `content/*.json` structure.
-- Donation, volunteer, and social links are still in **content/links.ts** (edit in the repo or add a collection later).
+1. Open `/admin-panel`
+2. Sign in with your admin ID and password
+3. Upload a new homepage picture if needed
+4. Update the statement text or YouTube link
+5. Click `Save & Publish`
+
+The admin panel writes the updates to GitHub. If your site redeploys automatically from GitHub, the public site will update after the deploy finishes.
+
+## Notes
+
+- Uploaded homepage images are stored in `public/images/admin/`
+- The live homepage reads from `content/site-content.json`
+- The older Decap CMS at `/admin/` can remain in the repo, but `/admin-panel` is the new custom login flow

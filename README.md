@@ -11,40 +11,44 @@ npm run dev
 
 ## Scripts
 
-- `npm run dev`: start dev server
-- `npm run build`: Next build + OpenNext Cloudflare build
-- `npm run deploy`: deploy worker via Wrangler
-- `npm run lint`: lint checks
+- `npm run dev`: start the dev server
+- `npm run build`: build the site for Next.js and OpenNext Cloudflare
+- `npm run deploy`: deploy with Wrangler
+- `npm run lint`: run lint checks
 
 ## Content files
 
+- Homepage content: `content/site-content.json`
 - Team: `content/team.json`
 - Events: `content/events.json`
 - Event media: `content/events-media.ts`
-- External links (including volunteer form): `content/links.ts`
+- External links: `content/links.ts`
 
-## Team photos
+## Admin panel
 
-Put team images in `public/images/team/`:
+- URL: `/admin-panel`
+- Login type: admin ID + password
+- Editable homepage fields:
+  - hero picture
+  - hero statement
+  - mission statement
+  - featured YouTube title and link
 
-- `courtney-lee.png`
-- `kaden-joo.png`
-- `eric-kim.png`
+Set these environment variables before using the admin panel:
 
-## Schedule media
+- `ADMIN_ID`
+- `ADMIN_PASSWORD`
+- `ADMIN_JWT_SECRET`
+- `GITHUB_TOKEN`
+- `GITHUB_REPO` (optional, defaults to `soldisn2025-png/spaceheardus-v3`)
+- `GITHUB_BRANCH` (optional, defaults to `main`)
 
-- Group photo expected at `public/images/events/group-photo.jpg`
-- Videos expected at:
-  - `public/videos/performances/event-sample-1.mp4`
-  - `public/videos/performances/event-sample-2.mp4`
+When an admin uploads a new homepage image, it is committed to `public/images/admin/`.
+When an admin saves the form, `content/site-content.json` is committed to GitHub and your deploy pipeline can publish it automatically.
 
-If filenames differ, update `content/events-media.ts`.
-
-## Admin
-
-Decap CMS is available at `/admin/` using `public/admin/config.yml`.
+See `ADMIN.md` for the setup walkthrough.
 
 ## Cloudflare deploy
 
-This project deploys with **OpenNext + Cloudflare Workers**.
+This project deploys with OpenNext + Cloudflare Workers.
 See `CLOUDFLARE_DEPLOY.md`.

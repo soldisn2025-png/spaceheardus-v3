@@ -1,150 +1,95 @@
 'use client'
 
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Script from 'next/script'
-
-declare global {
-  interface Window {
-    handleGoogleCredential: (response: { credential: string }) => void
-  }
-}
 
 export default function AdminLoginPage() {
   const router = useRouter()
-  const [email, setEmail] = useState('')
+  const [adminId, setAdminId] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? ''
-
-  async function login(body: object) {
-    setLoading(true)
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
     setError('')
+    setLoading(true)
+
     try {
-      const res = await fetch('/api/admin/login', {
+      const response = await fetch('/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
+        body: JSON.stringify({ id: adminId, password }),
       })
-      if (res.ok) {
-        router.push('/admin-panel/dashboard')
-      } else {
-        const data = await res.json() as { error?: string }
-        setError(data.error ?? 'Login failed. Check your credentials.')
+
+      if (!response.ok) {
+        const data = await response.json() as { error?: string }
+        setError(data.error ?? 'Sign-in failed.')
+        return
       }
+
+      router.push('/admin-panel/dashboard')
+      router.refresh()
     } catch {
-      setError('Network error. Please try again.')
-    }
-    setLoading(false)
-  }
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    void login({ email, password })
-  }
-
-  // Called by Google Identity Services script
-  if (typeof window !== 'undefined') {
-    window.handleGoogleCredential = (response) => {
-      void login({ googleToken: response.credential })
+      setError('Could not reach the admin service. Please try again.')
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen bg-[#fffdf6] flex items-center justify-center px-4">
-      {googleClientId && (
-        <Script
-          src="https://accounts.google.com/gsi/client"
-          strategy="afterInteractive"
-        />
-      )}
-
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="font-playfair text-3xl text-stone-900 font-bold mb-1">Space Heard Us</h1>
-          <p className="text-stone-500 text-sm">Admin Panel</p>
-        </div>
-
-        <div className="bg-white rounded-3xl border border-amber-100 shadow-sm p-8">
-          <h2 className="text-xl font-semibold text-stone-800 mb-6 text-center">Sign in</h2>
+    <section className="min-h-[calc(100vh-4rem)] bg-[#fffdf6] px-6 py-12">
+      <div className="mx-auto flex max-w-5xl items-center justify-center">
+        <div className="w-full max-w-md rounded-[2rem] border border-amber-200 bg-white p-8 shadow-[0_24px_80px_rgba(120,53,15,0.08)]">
+          <div className="mb-8 text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-amber-700">Admin Panel</p>
+            <h1 className="mt-3 font-playfair text-4xl font-bold text-stone-900">Space Heard Us</h1>
+            <p className="mt-3 text-sm leading-relaxed text-stone-600">
+              Sign in with your admin ID and password to update the homepage picture, statement, and YouTube link.
+            </p>
+          </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-stone-700 mb-1">Email</label>
+            <label className="block">
+              <span className="mb-1.5 block text-sm font-medium text-stone-700">Admin ID</span>
               <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                value={adminId}
+                onChange={(event) => setAdminId(event.target.value)}
                 required
-                className="w-full rounded-xl border border-amber-200 px-4 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition"
-                placeholder="admin@example.com"
+                className="w-full rounded-2xl border border-amber-200 px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-amber-500 focus:ring-2 focus:ring-amber-100"
+                placeholder="Enter your admin ID"
               />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-stone-700 mb-1">Password</label>
+            </label>
+
+            <label className="block">
+              <span className="mb-1.5 block text-sm font-medium text-stone-700">Password</span>
               <input
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(event) => setPassword(event.target.value)}
                 required
-                className="w-full rounded-xl border border-amber-200 px-4 py-2.5 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-200 transition"
-                placeholder="••••••••"
+                className="w-full rounded-2xl border border-amber-200 px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-amber-500 focus:ring-2 focus:ring-amber-100"
+                placeholder="Enter your password"
               />
-            </div>
+            </label>
 
-            {error && (
-              <p className="text-red-600 text-sm bg-red-50 rounded-xl px-4 py-2">{error}</p>
-            )}
+            {error ? (
+              <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                {error}
+              </p>
+            ) : null}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 bg-amber-500 text-white font-bold rounded-xl hover:bg-amber-600 disabled:opacity-50 transition-colors"
+              className="w-full rounded-2xl bg-amber-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-amber-600 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {loading ? 'Signing in…' : 'Sign In'}
+              {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
-
-          {googleClientId && (
-            <>
-              <div className="my-5 flex items-center gap-3">
-                <div className="flex-1 h-px bg-amber-100" />
-                <span className="text-xs text-stone-400">or</span>
-                <div className="flex-1 h-px bg-amber-100" />
-              </div>
-
-              {/* Google Identity Services rendered button */}
-              <div
-                id="g_id_onload"
-                data-client_id={googleClientId}
-                data-callback="handleGoogleCredential"
-                data-auto_prompt="false"
-              />
-              <div
-                className="g_id_signin"
-                data-type="standard"
-                data-size="large"
-                data-theme="outline"
-                data-text="sign_in_with"
-                data-shape="rectangular"
-                data-width="100%"
-              />
-            </>
-          )}
-
-          {!googleClientId && (
-            <p className="mt-4 text-xs text-stone-400 text-center">
-              Google login: set <code className="bg-amber-50 px-1 rounded">NEXT_PUBLIC_GOOGLE_CLIENT_ID</code> env var to enable.
-            </p>
-          )}
         </div>
-
-        <p className="mt-6 text-center text-xs text-stone-400">
-          Space Heard Us Admin · <a href="/" className="underline hover:text-stone-600">Back to site</a>
-        </p>
       </div>
-    </div>
+    </section>
   )
 }

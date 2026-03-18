@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import siteContent from '@/content/site-content.json'
+import rawSiteContent from '@/content/site-content.json'
 import { teamMembers } from '@/content/team'
 import { links } from '@/content/links'
+import { DEFAULT_HERO_IMAGE, normalizeSiteContent } from '@/lib/siteContent'
 
 export const metadata: Metadata = {
   title: 'Space Heard Us | Inclusive Youth Nonprofit Band in Fairfax, VA',
@@ -21,14 +22,18 @@ function toYouTubeEmbed(url: string) {
 }
 
 export default function HomePage() {
-  const { home } = siteContent
+  const { home } = normalizeSiteContent(rawSiteContent)
   const homeVideo = toYouTubeEmbed(home.featuredVideoUrl)
+  const heroImage = home.heroImage || DEFAULT_HERO_IMAGE
 
   return (
     <>
       <section className="relative min-h-[88vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
-          <Image src="/images/group.jpg" alt="Space Heard Us" fill className="object-cover object-top opacity-20" priority />
+          <div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-45"
+            style={{ backgroundImage: `url("${heroImage}")` }}
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-[#fff8db]/75 via-[#fffaf0]/85 to-[#fffdf6]" />
         </div>
 

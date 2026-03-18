@@ -1,394 +1,398 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { DEFAULT_HERO_IMAGE, type SiteContent } from '@/lib/siteContent'
 
-type SiteContent = {
-  site: { name: string; tagline: string; description: string; logo: string }
-  home: {
-    heroTitle: string
-    heroSubtitle: string
-    missionTitle: string
-    missionText: string
-    featuredVideoTitle: string
-    featuredVideoUrl: string
-    volunteerTitle: string
-    volunteerText: string
-    contactTitle: string
-    contactText: string
+type ContentResponse = {
+  error?: string
+  siteContent?: {
+    content: SiteContent
+    sha: string
   }
 }
 
-type GalleryVideo = { id: string; title: string; url: string }
-type GalleryPhoto = { id: string; src: string; alt: string; caption: string }
-type GalleryPage = {
-  title: string
-  subtitle: string
-  videos: GalleryVideo[]
-  photos: GalleryPhoto[]
-}
-
-type ContentData = {
-  siteContent: { content: SiteContent; sha: string } | null
-  galleryPage: { content: GalleryPage; sha: string } | null
-}
-
-type TabKey = 'home' | 'videos' | 'photos'
-
 function Field({
-  label,
-  value,
-  onChange,
-  multiline = false,
   hint,
+  label,
+  multiline = false,
+  onChange,
+  value,
 }: {
-  label: string
-  value: string
-  onChange: (v: string) => void
-  multiline?: boolean
   hint?: string
+  label: string
+  multiline?: boolean
+  onChange: (value: string) => void
+  value: string
 }) {
   return (
-    <div>
-      <label className="block text-sm font-medium text-stone-700 mb-1">{label}</label>
+    <label className="block">
+      <span className="mb-1.5 block text-sm font-medium text-stone-700">{label}</span>
       {multiline ? (
         <textarea
           value={value}
-          onChange={(e) => onChange(e.target.value)}
-          rows={3}
-          className="w-full rounded-xl border border-amber-200 px-3 py-2 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition resize-y"
+          onChange={(event) => onChange(event.target.value)}
+          rows={5}
+          className="w-full rounded-2xl border border-amber-200 px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-amber-500 focus:ring-2 focus:ring-amber-100"
         />
       ) : (
         <input
           type="text"
           value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-full rounded-xl border border-amber-200 px-3 py-2 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition"
+          onChange={(event) => onChange(event.target.value)}
+          className="w-full rounded-2xl border border-amber-200 px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-amber-500 focus:ring-2 focus:ring-amber-100"
         />
       )}
-      {hint && <p className="text-xs text-stone-400 mt-1">{hint}</p>}
-    </div>
+      {hint ? <span className="mt-1.5 block text-xs text-stone-500">{hint}</span> : null}
+    </label>
   )
 }
 
-export default function AdminDashboard() {
+function readFileAsDataUrl(file: File) {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader()
+
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        resolve(reader.result)
+        return
+      }
+
+      reject(new Error('Could not read the selected file.'))
+    }
+
+    reader.onerror = () => reject(new Error('Could not read the selected file.'))
+    reader.readAsDataURL(file)
+  })
+}
+
+export default function AdminDashboardPage() {
   const router = useRouter()
-  const [data, setData] = useState<ContentData | null>(null)
+  const [content, setContent] = useState<SiteContent | null>(null)
+  const [fileSha, setFileSha] = useState('')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
-  const [saved, setSaved] = useState<string | null>(null)
-  const [tab, setTab] = useState<TabKey>('home')
-
-  // Local editable state
-  const [homeContent, setHomeContent] = useState<SiteContent['home'] | null>(null)
-  const [siteInfo, setSiteInfo] = useState<SiteContent['site'] | null>(null)
-  const [videos, setVideos] = useState<GalleryVideo[]>([])
-  const [photos, setPhotos] = useState<GalleryPhoto[]>([])
+  const [uploadingImage, setUploadingImage] = useState(false)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
+  const [localImagePreview, setLocalImagePreview] = useState('')
 
   const loadContent = useCallback(async () => {
     setLoading(true)
+    setError('')
+
     try {
-      const res = await fetch('/api/admin/content')
-      if (res.status === 401) {
-        router.push('/admin-panel')
+      const response = await fetch('/api/admin/content', { cache: 'no-store' })
+
+      if (response.status === 401) {
+        router.replace('/admin-panel')
         return
       }
-      const json = await res.json() as ContentData
-      setData(json)
-      if (json.siteContent) {
-        setHomeContent(json.siteContent.content.home)
-        setSiteInfo(json.siteContent.content.site)
+
+      const data = await response.json() as ContentResponse
+
+      if (!response.ok || !data.siteContent) {
+        setError(data.error ?? 'Could not load the homepage settings.')
+        return
       }
-      if (json.galleryPage) {
-        setVideos(json.galleryPage.content.videos)
-        setPhotos(json.galleryPage.content.photos)
-      }
+
+      setContent(data.siteContent.content)
+      setFileSha(data.siteContent.sha)
     } catch {
-      // ignore
+      setError('Could not load the homepage settings.')
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }, [router])
 
   useEffect(() => {
     void loadContent()
   }, [loadContent])
 
-  async function saveHomeContent() {
-    if (!data?.siteContent || !homeContent || !siteInfo) return
-    setSaving(true)
-    const updated: SiteContent = { site: siteInfo, home: homeContent }
-    const res = await fetch('/api/admin/content', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ file: 'site-content', content: updated, sha: data.siteContent.sha }),
-    })
-    setSaving(false)
-    if (res.ok) {
-      setSaved('home')
-      setTimeout(() => setSaved(null), 3000)
-      await loadContent()
-    } else {
-      const err = await res.json() as { error?: string }
-      alert(err.error ?? 'Save failed')
+  async function handleImageSelected(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0]
+
+    if (!file || !content) {
+      return
+    }
+
+    setError('')
+    setSuccess('')
+    setUploadingImage(true)
+
+    try {
+      const dataUrl = await readFileAsDataUrl(file)
+      const base64 = dataUrl.split(',')[1] ?? ''
+      const response = await fetch('/api/admin/upload-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          base64,
+          fileName: file.name,
+        }),
+      })
+      const data = await response.json() as { error?: string; path?: string }
+
+      if (!response.ok || !data.path) {
+        setError(data.error ?? 'Image upload failed.')
+        return
+      }
+
+      setLocalImagePreview(dataUrl)
+      setContent({
+        ...content,
+        home: {
+          ...content.home,
+          heroImage: data.path,
+        },
+      })
+      setSuccess('Image uploaded. Click Save & Publish to update the live homepage.')
+    } catch {
+      setError('Image upload failed.')
+    } finally {
+      setUploadingImage(false)
+      event.target.value = ''
     }
   }
 
-  async function saveGallery() {
-    if (!data?.galleryPage) return
+  async function handleSave() {
+    if (!content || !fileSha) {
+      return
+    }
+
     setSaving(true)
-    const updated: GalleryPage = { ...data.galleryPage.content, videos, photos }
-    const res = await fetch('/api/admin/content', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ file: 'gallery-page', content: updated, sha: data.galleryPage.sha }),
-    })
-    setSaving(false)
-    if (res.ok) {
-      setSaved('gallery')
-      setTimeout(() => setSaved(null), 3000)
+    setError('')
+    setSuccess('')
+
+    try {
+      const response = await fetch('/api/admin/content', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          content,
+          file: 'site-content',
+          sha: fileSha,
+        }),
+      })
+      const data = await response.json() as { error?: string }
+
+      if (!response.ok) {
+        setError(data.error ?? 'Could not save the homepage settings.')
+        return
+      }
+
+      setSuccess('Saved and published. Your site should redeploy in about a minute.')
       await loadContent()
-    } else {
-      const err = await res.json() as { error?: string }
-      alert(err.error ?? 'Save failed')
+    } catch {
+      setError('Could not save the homepage settings.')
+    } finally {
+      setSaving(false)
     }
   }
 
-  async function logout() {
+  async function handleLogout() {
     await fetch('/api/admin/logout', { method: 'POST' })
     router.push('/admin-panel')
-  }
-
-  function updateVideo(index: number, field: keyof GalleryVideo, value: string) {
-    setVideos((prev) => prev.map((v, i) => i === index ? { ...v, [field]: value } : v))
-  }
-
-  function addVideo() {
-    setVideos((prev) => [...prev, { id: `video-${Date.now()}`, title: 'New Video', url: '' }])
-  }
-
-  function removeVideo(index: number) {
-    setVideos((prev) => prev.filter((_, i) => i !== index))
-  }
-
-  function updatePhoto(index: number, field: keyof GalleryPhoto, value: string) {
-    setPhotos((prev) => prev.map((p, i) => i === index ? { ...p, [field]: value } : p))
-  }
-
-  function addPhoto() {
-    setPhotos((prev) => [...prev, { id: `photo-${Date.now()}`, src: '', alt: '', caption: '' }])
-  }
-
-  function removePhoto(index: number) {
-    setPhotos((prev) => prev.filter((_, i) => i !== index))
+    router.refresh()
   }
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#fffdf6] flex items-center justify-center">
-        <p className="text-stone-500 text-sm">Loading content…</p>
-      </div>
+      <section className="min-h-[calc(100vh-4rem)] bg-[#fffdf6] px-6 py-12">
+        <div className="mx-auto max-w-5xl rounded-[2rem] border border-amber-200 bg-white p-10 text-center text-sm text-stone-500 shadow-[0_24px_80px_rgba(120,53,15,0.08)]">
+          Loading homepage settings...
+        </div>
+      </section>
     )
   }
 
-  const tabs: { key: TabKey; label: string }[] = [
-    { key: 'home', label: 'Home Text' },
-    { key: 'videos', label: 'YouTube Videos' },
-    { key: 'photos', label: 'Photos' },
-  ]
+  if (!content) {
+    return (
+      <section className="min-h-[calc(100vh-4rem)] bg-[#fffdf6] px-6 py-12">
+        <div className="mx-auto max-w-5xl rounded-[2rem] border border-red-200 bg-white p-10 text-center text-sm text-red-700 shadow-[0_24px_80px_rgba(120,53,15,0.08)]">
+          {error || 'Could not load the admin content.'}
+        </div>
+      </section>
+    )
+  }
+
+  const heroPreview = localImagePreview || content.home.heroImage || DEFAULT_HERO_IMAGE
 
   return (
-    <div className="min-h-screen bg-[#fffdf6]">
-      {/* Top bar */}
-      <header className="border-b border-amber-200 bg-white px-6 py-4 flex items-center justify-between">
-        <div>
-          <h1 className="font-playfair text-xl text-stone-900 font-bold">Space Heard Us · Admin</h1>
-          <p className="text-xs text-stone-400">Content editor — changes commit to GitHub and redeploy automatically</p>
-        </div>
-        <div className="flex items-center gap-4">
-          <a href="/" target="_blank" rel="noopener" className="text-sm text-amber-700 hover:underline">
-            View site ↗
-          </a>
-          <button
-            onClick={() => void logout()}
-            className="text-sm text-stone-500 hover:text-stone-700 border border-stone-200 rounded-full px-4 py-1.5 hover:border-stone-400 transition"
-          >
-            Sign out
-          </button>
-        </div>
-      </header>
+    <section className="bg-[#fffdf6] px-6 py-10">
+      <div className="mx-auto max-w-5xl">
+        <div className="mb-8 flex flex-col gap-5 rounded-[2rem] border border-amber-200 bg-white px-6 py-6 shadow-[0_24px_80px_rgba(120,53,15,0.08)] md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-amber-700">Admin Menu</p>
+            <h1 className="mt-2 font-playfair text-4xl font-bold text-stone-900">Homepage Controls</h1>
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-stone-600">
+              Update the homepage picture, the main statement text, and the featured YouTube link from one place.
+            </p>
+          </div>
 
-      <div className="max-w-3xl mx-auto px-6 py-10">
-        {/* Tabs */}
-        <div className="flex gap-2 mb-8 border-b border-amber-100 pb-0">
-          {tabs.map((t) => (
-            <button
-              key={t.key}
-              onClick={() => setTab(t.key)}
-              className={`px-5 py-2.5 text-sm font-medium rounded-t-xl border-b-2 transition ${
-                tab === t.key
-                  ? 'border-amber-500 text-amber-700 bg-amber-50'
-                  : 'border-transparent text-stone-500 hover:text-stone-700 hover:bg-stone-50'
-              }`}
+          <div className="flex flex-wrap gap-3">
+            <a
+              href="/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full border border-amber-200 px-4 py-2 text-sm font-medium text-stone-700 transition hover:border-amber-400 hover:bg-amber-50"
             >
-              {t.label}
+              View Site
+            </a>
+            <button
+              type="button"
+              onClick={() => void handleLogout()}
+              className="rounded-full border border-stone-200 px-4 py-2 text-sm font-medium text-stone-600 transition hover:border-stone-400 hover:text-stone-900"
+            >
+              Sign Out
             </button>
-          ))}
+          </div>
         </div>
 
-        {/* Home Text tab */}
-        {tab === 'home' && homeContent && siteInfo && (
+        <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-6">
-            <div className="bg-white rounded-2xl border border-amber-100 p-6 space-y-5">
-              <h2 className="font-semibold text-stone-800 text-base">Site Info</h2>
-              <Field label="Site tagline" value={siteInfo.tagline} onChange={(v) => setSiteInfo({ ...siteInfo, tagline: v })} />
-              <Field label="Site description" value={siteInfo.description} onChange={(v) => setSiteInfo({ ...siteInfo, description: v })} multiline />
+            <div className="rounded-[2rem] border border-amber-200 bg-white p-6 shadow-[0_24px_80px_rgba(120,53,15,0.06)]">
+              <div className="mb-5 flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-semibold text-stone-900">Homepage Picture</h2>
+                  <p className="mt-1 text-sm text-stone-500">
+                    Upload a new hero image or paste a saved image path.
+                  </p>
+                </div>
+                <label className="cursor-pointer rounded-full bg-amber-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-amber-600">
+                  {uploadingImage ? 'Uploading...' : 'Upload Image'}
+                  <input
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp,image/gif,image/avif"
+                    onChange={(event) => void handleImageSelected(event)}
+                    className="hidden"
+                    disabled={uploadingImage}
+                  />
+                </label>
+              </div>
+
+              <div className="relative overflow-hidden rounded-[1.5rem] border border-amber-100 bg-[#fdf6df]">
+                <div
+                  className="aspect-[16/10] w-full bg-cover bg-center"
+                  style={{ backgroundImage: `url("${heroPreview}")` }}
+                />
+              </div>
+
+              <div className="mt-5">
+                <Field
+                  label="Image path"
+                  value={content.home.heroImage}
+                  onChange={(value) =>
+                    {
+                      setLocalImagePreview('')
+                      setContent({
+                        ...content,
+                        home: { ...content.home, heroImage: value },
+                      })
+                    }
+                  }
+                  hint="Example: /images/admin/your-image.jpg"
+                />
+              </div>
             </div>
 
-            <div className="bg-white rounded-2xl border border-amber-100 p-6 space-y-5">
-              <h2 className="font-semibold text-stone-800 text-base">Hero Section</h2>
-              <Field label="Hero subtitle" value={homeContent.heroSubtitle} onChange={(v) => setHomeContent({ ...homeContent, heroSubtitle: v })} multiline />
-            </div>
+            <div className="rounded-[2rem] border border-amber-200 bg-white p-6 shadow-[0_24px_80px_rgba(120,53,15,0.06)]">
+              <h2 className="text-lg font-semibold text-stone-900">Statements</h2>
+              <p className="mt-1 text-sm text-stone-500">
+                These are the main homepage text blocks visitors see first.
+              </p>
 
-            <div className="bg-white rounded-2xl border border-amber-100 p-6 space-y-5">
-              <h2 className="font-semibold text-stone-800 text-base">Mission Section</h2>
-              <Field label="Mission title" value={homeContent.missionTitle} onChange={(v) => setHomeContent({ ...homeContent, missionTitle: v })} />
-              <Field label="Mission text" value={homeContent.missionText} onChange={(v) => setHomeContent({ ...homeContent, missionText: v })} multiline />
-            </div>
+              <div className="mt-5 space-y-4">
+                <Field
+                  label="Hero statement"
+                  value={content.home.heroSubtitle}
+                  onChange={(value) =>
+                    setContent({
+                      ...content,
+                      home: { ...content.home, heroSubtitle: value },
+                    })
+                  }
+                  multiline
+                />
 
-            <div className="bg-white rounded-2xl border border-amber-100 p-6 space-y-5">
-              <h2 className="font-semibold text-stone-800 text-base">Featured Video</h2>
-              <Field
-                label="Featured video section title"
-                value={homeContent.featuredVideoTitle}
-                onChange={(v) => setHomeContent({ ...homeContent, featuredVideoTitle: v })}
-              />
-              <Field
-                label="YouTube URL"
-                value={homeContent.featuredVideoUrl}
-                onChange={(v) => setHomeContent({ ...homeContent, featuredVideoUrl: v })}
-                hint="Paste a YouTube video URL, e.g. https://www.youtube.com/watch?v=abc123"
-              />
-            </div>
-
-            <div className="bg-white rounded-2xl border border-amber-100 p-6 space-y-5">
-              <h2 className="font-semibold text-stone-800 text-base">Volunteer Section</h2>
-              <Field label="Title" value={homeContent.volunteerTitle} onChange={(v) => setHomeContent({ ...homeContent, volunteerTitle: v })} />
-              <Field label="Text" value={homeContent.volunteerText} onChange={(v) => setHomeContent({ ...homeContent, volunteerText: v })} multiline />
-            </div>
-
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => void saveHomeContent()}
-                disabled={saving}
-                className="px-6 py-2.5 bg-amber-500 text-white font-bold rounded-xl hover:bg-amber-600 disabled:opacity-50 transition-colors"
-              >
-                {saving ? 'Saving…' : 'Save & Publish'}
-              </button>
-              {saved === 'home' && (
-                <span className="text-green-600 text-sm font-medium">Saved! Site will redeploy in ~1 min.</span>
-              )}
+                <Field
+                  label="Mission statement"
+                  value={content.home.missionText}
+                  onChange={(value) =>
+                    setContent({
+                      ...content,
+                      home: { ...content.home, missionText: value },
+                    })
+                  }
+                  multiline
+                />
+              </div>
             </div>
           </div>
-        )}
 
-        {/* Videos tab */}
-        {tab === 'videos' && (
-          <div className="space-y-5">
-            {videos.map((video, i) => (
-              <div key={video.id} className="bg-white rounded-2xl border border-amber-100 p-5 space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-medium text-stone-700 text-sm">Video {i + 1}</h3>
-                  <button
-                    onClick={() => removeVideo(i)}
-                    className="text-xs text-red-400 hover:text-red-600 border border-red-100 rounded-full px-3 py-1 hover:border-red-300 transition"
-                  >
-                    Remove
-                  </button>
-                </div>
-                <Field label="Title" value={video.title} onChange={(v) => updateVideo(i, 'title', v)} />
+          <div className="space-y-6">
+            <div className="rounded-[2rem] border border-amber-200 bg-white p-6 shadow-[0_24px_80px_rgba(120,53,15,0.06)]">
+              <h2 className="text-lg font-semibold text-stone-900">Featured YouTube Link</h2>
+              <p className="mt-1 text-sm text-stone-500">
+                Paste the YouTube video URL you want to show on the homepage.
+              </p>
+
+              <div className="mt-5 space-y-4">
+                <Field
+                  label="Section title"
+                  value={content.home.featuredVideoTitle}
+                  onChange={(value) =>
+                    setContent({
+                      ...content,
+                      home: { ...content.home, featuredVideoTitle: value },
+                    })
+                  }
+                />
+
                 <Field
                   label="YouTube URL"
-                  value={video.url}
-                  onChange={(v) => updateVideo(i, 'url', v)}
-                  hint="e.g. https://www.youtube.com/watch?v=abc123"
+                  value={content.home.featuredVideoUrl}
+                  onChange={(value) =>
+                    setContent({
+                      ...content,
+                      home: { ...content.home, featuredVideoUrl: value },
+                    })
+                  }
+                  hint="Example: https://www.youtube.com/watch?v=abc123"
                 />
               </div>
-            ))}
+            </div>
 
-            <button
-              onClick={addVideo}
-              className="w-full py-3 border-2 border-dashed border-amber-200 rounded-2xl text-amber-700 text-sm font-medium hover:border-amber-400 hover:bg-amber-50 transition"
-            >
-              + Add Video
-            </button>
+            <div className="rounded-[2rem] border border-amber-200 bg-gradient-to-br from-[#fff7dd] via-white to-[#fff1cf] p-6 shadow-[0_24px_80px_rgba(120,53,15,0.06)]">
+              <h2 className="text-lg font-semibold text-stone-900">Publish</h2>
+              <p className="mt-1 text-sm leading-relaxed text-stone-600">
+                Saving writes the updated content to GitHub. If the site is connected to Cloudflare or another auto-deploy target, the new content will go live after the deploy finishes.
+              </p>
 
-            <div className="flex items-center gap-4 pt-2">
+              {error ? (
+                <p className="mt-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                  {error}
+                </p>
+              ) : null}
+
+              {success ? (
+                <p className="mt-4 rounded-2xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+                  {success}
+                </p>
+              ) : null}
+
               <button
-                onClick={() => void saveGallery()}
-                disabled={saving}
-                className="px-6 py-2.5 bg-amber-500 text-white font-bold rounded-xl hover:bg-amber-600 disabled:opacity-50 transition-colors"
+                type="button"
+                onClick={() => void handleSave()}
+                disabled={saving || uploadingImage}
+                className="mt-5 w-full rounded-2xl bg-amber-500 px-4 py-3 text-sm font-semibold text-white transition hover:bg-amber-600 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {saving ? 'Saving…' : 'Save & Publish'}
+                {saving ? 'Saving...' : 'Save & Publish'}
               </button>
-              {saved === 'gallery' && (
-                <span className="text-green-600 text-sm font-medium">Saved! Site will redeploy in ~1 min.</span>
-              )}
             </div>
           </div>
-        )}
-
-        {/* Photos tab */}
-        {tab === 'photos' && (
-          <div className="space-y-5">
-            <p className="text-sm text-stone-500 bg-amber-50 rounded-xl px-4 py-3 border border-amber-100">
-              Enter the URL or path of each photo. To upload new images, use the{' '}
-              <a href="/admin/" className="underline text-amber-700">Decap CMS at /admin/</a> which handles file uploads directly to GitHub.
-            </p>
-
-            {photos.map((photo, i) => (
-              <div key={photo.id} className="bg-white rounded-2xl border border-amber-100 p-5 space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-medium text-stone-700 text-sm">Photo {i + 1}</h3>
-                  <button
-                    onClick={() => removePhoto(i)}
-                    className="text-xs text-red-400 hover:text-red-600 border border-red-100 rounded-full px-3 py-1 hover:border-red-300 transition"
-                  >
-                    Remove
-                  </button>
-                </div>
-                <Field
-                  label="Image URL or path"
-                  value={photo.src}
-                  onChange={(v) => updatePhoto(i, 'src', v)}
-                  hint="e.g. /images/gallery/my-photo.jpg"
-                />
-                <Field label="Alt text" value={photo.alt} onChange={(v) => updatePhoto(i, 'alt', v)} hint="Describe the photo for accessibility" />
-                <Field label="Caption (optional)" value={photo.caption} onChange={(v) => updatePhoto(i, 'caption', v)} />
-              </div>
-            ))}
-
-            <button
-              onClick={addPhoto}
-              className="w-full py-3 border-2 border-dashed border-amber-200 rounded-2xl text-amber-700 text-sm font-medium hover:border-amber-400 hover:bg-amber-50 transition"
-            >
-              + Add Photo
-            </button>
-
-            <div className="flex items-center gap-4 pt-2">
-              <button
-                onClick={() => void saveGallery()}
-                disabled={saving}
-                className="px-6 py-2.5 bg-amber-500 text-white font-bold rounded-xl hover:bg-amber-600 disabled:opacity-50 transition-colors"
-              >
-                {saving ? 'Saving…' : 'Save & Publish'}
-              </button>
-              {saved === 'gallery' && (
-                <span className="text-green-600 text-sm font-medium">Saved! Site will redeploy in ~1 min.</span>
-              )}
-            </div>
-          </div>
-        )}
+        </div>
       </div>
-    </div>
+    </section>
   )
 }

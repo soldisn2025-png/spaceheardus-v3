@@ -1,71 +1,69 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAdminSession } from '@/lib/adminSession'
+import { getJsonFile, updateJsonFile } from '@/lib/githubContent'
+import {
+  normalizeSiteContent,
+  SITE_CONTENT_PATH,
+} from '@/lib/siteContent'
 
-const GITHUB_REPO = process.env.GITHUB_REPO || 'soldisn2025-png/spaceheardus-v3'
-const GITHUB_BRANCH = 'main'
+export async function GET(request: NextRequest) {
+  const unauthorizedResponse = await requireAdminSession(request)
 
-async function githubFetch(path: string, options: RequestInit = {}) {
-  const token = process.env.GITHUB_TOKEN
-  return fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${path}?ref=${GITHUB_BRANCH}`, {
-    ...options,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/vnd.github+json',
-      'X-GitHub-Api-Version': '2022-11-28',
-      ...(options.headers ?? {}),
-    },
-  })
-}
-
-async function getFile(path: string) {
-  const res = await githubFetch(path)
-  if (!res.ok) return null
-  const data = await res.json() as { content: string; sha: string }
-  return {
-    content: JSON.parse(atob(data.content.replace(/\n/g, ''))),
-    sha: data.sha,
+  if (unauthorizedResponse) {
+    return unauthorizedResponse
   }
-}
 
-async function putFile(path: string, content: unknown, sha: string, message: string) {
-  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2) + '\n')))
-  const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`, {
-    method: 'PUT',
-    headers: {
-      Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-      Accept: 'application/vnd.github+json',
-      'X-GitHub-Api-Version': '2022-11-28',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ message, content: encoded, sha, branch: GITHUB_BRANCH }),
-  })
-  return res.ok
-}
+  try {
+    const siteContent = await getJsonFile(SITE_CONTENT_PATH)
 
-export async function GET() {
-  const [siteContent, galleryPage] = await Promise.all([
-    getFile('content/site-content.json'),
-    getFile('content/gallery-page.json'),
-  ])
-  return NextResponse.json({ siteContent, galleryPage })
+    return NextResponse.json({
+      siteContent: {
+        content: normalizeSiteContent(siteContent.content),
+        sha: siteContent.sha,
+      },
+    })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Could not load content.'
+
+    return NextResponse.json({ error: message }, { status: 500 })
+  }
 }
 
 export async function PUT(request: NextRequest) {
-  const body = await request.json() as { file: string; content: unknown; sha: string }
-  const { file, content, sha } = body
+  const unauthorizedResponse = await requireAdminSession(request)
 
-  const allowedFiles: Record<string, string> = {
-    'site-content': 'content/site-content.json',
-    'gallery-page': 'content/gallery-page.json',
+  if (unauthorizedResponse) {
+    return unauthorizedResponse
   }
 
-  const path = allowedFiles[file]
-  if (!path) {
-    return NextResponse.json({ error: 'Invalid file' }, { status: 400 })
-  }
+  try {
+    const body = await request.json() as {
+      content?: unknown
+      file?: string
+      sha?: string
+    }
 
-  const ok = await putFile(path, content, sha, `admin: update ${file}`)
-  if (!ok) {
-    return NextResponse.json({ error: 'GitHub update failed — check GITHUB_TOKEN' }, { status: 500 })
+    if (body.file !== 'site-content') {
+      return NextResponse.json({ error: 'Invalid file selection.' }, { status: 400 })
+    }
+
+    if (!body.sha) {
+      return NextResponse.json({ error: 'Missing file version.' }, { status: 400 })
+    }
+
+    const normalizedContent = normalizeSiteContent(body.content)
+
+    await updateJsonFile(
+      SITE_CONTENT_PATH,
+      normalizedContent,
+      body.sha,
+      'admin: update homepage content',
+    )
+
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Could not save content.'
+
+    return NextResponse.json({ error: message }, { status: 500 })
   }
-  return NextResponse.json({ success: true })
 }
