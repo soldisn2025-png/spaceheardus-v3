@@ -12,6 +12,7 @@ const navLinks = [
   { href: '/team', label: 'Team' },
   { href: '/gallery', label: 'Gallery' },
   { href: '/schedule', label: 'Schedule' },
+  { href: '/book', label: 'Book Us' },
   { href: '/donation', label: 'Donation' },
   { href: links.volunteer, label: 'Volunteer Form', external: true },
 ]

@@ -1,5 +1,13 @@
+import type { Metadata } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 import { teamMembers } from '@/content/team'
+
+export const metadata: Metadata = {
+  title: 'Meet the Band | Space Heard Us — Inclusive Youth Musicians in Fairfax, VA',
+  description:
+    'Meet Eric Kim and Kaden Joo — young musicians with autism who perform across Northern Virginia — alongside band leader Courtney Lee. Their stories inspire families and communities.',
+}
 
 const instruments: Record<string, string> = {
   'courtney-lee': 'Violin',
@@ -17,7 +25,7 @@ export default function MeetThePlayersPage() {
           </span>
           <h1 className="font-playfair text-5xl md:text-6xl text-stone-900 font-bold mb-4">Meet the Players</h1>
           <p className="text-stone-600 font-inter text-lg max-w-xl mx-auto">
-            Three talented young musicians united by a passion for music and making a difference.
+            Three young musicians in Fairfax, VA — united by a passion for music and a mission to show what kids with disabilities can do.
           </p>
         </div>
       </section>
@@ -47,10 +55,29 @@ export default function MeetThePlayersPage() {
                 <h2 className="font-playfair text-4xl md:text-5xl text-stone-900 font-bold mb-2">{player.name}</h2>
                 <p className="text-amber-700 font-semibold font-inter mb-6">{player.role}</p>
                 <div className="w-12 h-0.5 bg-amber-400/60 mb-6 rounded-full" />
-                <p className="text-stone-600 font-inter text-lg leading-relaxed">{player.shortBio}</p>
+                <p className="text-stone-600 font-inter text-lg leading-relaxed">
+                  {player.extendedStory || player.shortBio}
+                </p>
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="py-16 px-6 bg-amber-50/60 border-t border-amber-200 text-center">
+        <div className="max-w-2xl mx-auto">
+          <h2 className="font-playfair text-3xl md:text-4xl text-stone-900 font-bold mb-4">
+            Bring Their Story to Your Community
+          </h2>
+          <p className="text-stone-600 font-inter text-lg mb-8">
+            We perform at churches, hospitals, daycares, and community events across Fairfax, VA and Northern Virginia.
+          </p>
+          <Link
+            href="/book"
+            className="inline-block px-10 py-4 bg-amber-500 text-white font-bold rounded-full hover:bg-amber-600 transition-all shadow-lg shadow-amber-500/25"
+          >
+            Request a Performance
+          </Link>
         </div>
       </section>
     </div>
