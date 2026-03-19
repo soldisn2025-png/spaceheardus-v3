@@ -3,11 +3,22 @@
   "name": "spacehearduscursor",
   "main": ".open-next/worker.js",
   "compatibility_date": "2025-09-27",
+  "keep_vars": true,
   "observability": {
     "enabled": true
   },
   "compatibility_flags": [
     "nodejs_compat"
+  ],
+  "routes": [
+    {
+      "pattern": "spaceheardus.org",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.spaceheardus.org",
+      "custom_domain": true
+    }
   ],
   "assets": {
     "directory": ".open-next/assets",
