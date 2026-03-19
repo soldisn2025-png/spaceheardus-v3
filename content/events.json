@@ -1,4 +1,16 @@
 {
+  "page": {
+    "badge": "Schedule",
+    "title": "Rehearsals & Events",
+    "intro": "Here is our current rehearsal and performance schedule in English.",
+    "rehearsalLabel": "Rehearsal Schedule",
+    "rehearsalTitle": "Every 2nd and 4th Sunday",
+    "rehearsalTime": "11:15 AM - 12:00 PM",
+    "performancesTitle": "Upcoming Performances",
+    "performancesIntro": "Dates marked as TBD will be updated as details are confirmed.",
+    "volunteerTitle": "Want to Help at Our Next Event?",
+    "volunteerText": "We are always looking for volunteers."
+  },
   "events": [
     {
       "id": "guest-sensory-concert",
@@ -6,11 +18,12 @@
       "date": "April - Date TBD",
       "time": "10:30 AM",
       "location": "Day Violin",
+      "locationDetail": "",
       "description": "Guest appearance at the Sensory Music Concert at Day Violin.",
       "type": "performance",
-      "isComingSoon": true,
       "rsvpLink": "/",
-      "rsvpLabel": "Get Updates"
+      "rsvpLabel": "Get Updates",
+      "isComingSoon": true
     },
     {
       "id": "first-concert",
@@ -18,11 +31,12 @@
       "date": "August - Date TBD",
       "time": "TBD",
       "location": "TBD",
+      "locationDetail": "",
       "description": "Our first concert is planned for August. More details will be announced soon.",
       "type": "performance",
-      "isComingSoon": true,
       "rsvpLink": "/",
-      "rsvpLabel": "Get Updates"
+      "rsvpLabel": "Get Updates",
+      "isComingSoon": true
     },
     {
       "id": "christmas-concert",
@@ -30,11 +44,12 @@
       "date": "December - Date TBD",
       "time": "TBD",
       "location": "TBD",
+      "locationDetail": "",
       "description": "Our Christmas concert is planned for December. More details will be announced soon.",
       "type": "performance",
-      "isComingSoon": true,
       "rsvpLink": "/",
-      "rsvpLabel": "Get Updates"
+      "rsvpLabel": "Get Updates",
+      "isComingSoon": true
     }
   ]
 }
