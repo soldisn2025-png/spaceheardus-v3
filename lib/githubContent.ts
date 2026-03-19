@@ -1,5 +1,6 @@
 const DEFAULT_GITHUB_BRANCH = 'main'
 const DEFAULT_GITHUB_REPO = 'soldisn2025-png/spaceheardus-v3'
+const GITHUB_USER_AGENT = 'SpaceHeardUsAdmin/1.0 (+https://spaceheardus.org)'
 
 type GitHubFileResponse = {
   content: string
@@ -38,10 +39,16 @@ function getGitHubConfig() {
 }
 
 async function readGitHubError(response: Response) {
+  const bodyText = await response.text()
+
   try {
-    const data = await response.json() as { message?: string }
+    const data = JSON.parse(bodyText) as { message?: string }
     return data.message ?? `GitHub request failed with status ${response.status}`
   } catch {
+    if (bodyText.trim()) {
+      return bodyText.trim()
+    }
+
     return `GitHub request failed with status ${response.status}`
   }
 }
@@ -57,6 +64,7 @@ async function githubRequest(path: string, init: RequestInit = {}) {
       Accept: 'application/vnd.github+json',
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
+      'User-Agent': GITHUB_USER_AGENT,
       'X-GitHub-Api-Version': '2022-11-28',
       ...(init.headers ?? {}),
     },
