@@ -1,6 +1,7 @@
 'use client'
 
 import { FormEvent, useState } from 'react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 export default function AdminLoginPage() {
@@ -88,6 +89,15 @@ export default function AdminLoginPage() {
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
+
+          <div className="mt-6 text-center">
+            <Link
+              href="/"
+              className="text-sm font-medium text-amber-700 transition hover:text-amber-800 hover:underline"
+            >
+              Go Back to Site
+            </Link>
+          </div>
         </div>
       </div>
     </section>
