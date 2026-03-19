@@ -12,8 +12,8 @@ This project is configured for **OpenNext + Cloudflare Workers**, not `out/` sta
 
 1. Install dependencies:
    - `npm install`
-2. Build:
-   - `npm run build`
+2. Build for Cloudflare:
+   - `npm run build:cloudflare`
 3. Authenticate Wrangler (first time):
    - `npx wrangler login`
 4. Deploy:
@@ -22,5 +22,6 @@ This project is configured for **OpenNext + Cloudflare Workers**, not `out/` sta
 ## Notes
 
 - Worker name is controlled by `wrangler.jsonc` (`name` field).
-- If GitHub Actions / Cloudflare CI is used, run `npm run build` then `wrangler deploy`.
+- `npm run deploy` now runs the OpenNext Cloudflare build before deploying.
+- If GitHub Actions / Cloudflare CI is used, run `npm run build:cloudflare` then `wrangler deploy`.
 - Do not set Cloudflare Pages output directory to `out`; this project does not generate `out`.
