@@ -35,6 +35,13 @@ collections:
           - { label: Volunteer section text, name: volunteerText, widget: text }
           - { label: Contact section title, name: contactTitle, widget: string }
           - { label: Contact section text, name: contactText, widget: text }
+      - label: Settings
+        name: settings
+        widget: object
+        fields:
+          - { label: Volunteer form URL, name: volunteerFormUrl, widget: string }
+          - { label: Landing page form recipient email, name: landingFormRecipientEmail, widget: string }
+          - { label: Book Us form recipient email, name: bookingFormRecipientEmail, widget: string }
 
   - name: links
     label: Links
@@ -44,7 +51,6 @@ collections:
       - { label: Zeffy URL, name: zeffy, widget: string }
       - { label: PayPal Donate URL, name: paypalDonate, widget: string }
       - { label: Volunteer URL, name: volunteer, widget: string }
-      - { label: Contact form action URL, name: contactForm, widget: string }
       - label: Social
         name: social
         widget: object

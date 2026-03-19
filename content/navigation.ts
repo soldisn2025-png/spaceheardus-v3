@@ -1,6 +1,6 @@
 /**
  * Main navigation and CTA links.
- * Volunteer Form uses links.volunteer (SignupGenius URL) from content/links.ts.
+ * The active site header reads the volunteer URL from content/site-content.json.
  */
 export const navigation = {
   main: [

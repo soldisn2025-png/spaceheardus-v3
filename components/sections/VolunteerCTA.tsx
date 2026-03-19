@@ -1,5 +1,8 @@
 import { CTA } from '@/components/ui/CTA';
-import { links } from '@/content/links';
+import rawSiteContent from '@/content/site-content.json';
+import { normalizeSiteContent } from '@/lib/siteContent';
+
+const siteContent = normalizeSiteContent(rawSiteContent);
 
 export function VolunteerCTA() {
   return (
@@ -12,7 +15,11 @@ export function VolunteerCTA() {
           We welcome volunteers, venues, donors, schools, churches, and community partners. If you’d like to invite us to perform or get involved, we’d love to hear from you.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-4">
-          <CTA href={links.volunteer || '/connect#volunteer'} variant="primary" external={!!links.volunteer}>
+          <CTA
+            href={siteContent.settings.volunteerFormUrl || '/connect#volunteer'}
+            variant="primary"
+            external={Boolean(siteContent.settings.volunteerFormUrl)}
+          >
             Volunteer sign-up
           </CTA>
           <CTA href="/connect" variant="outline">Connect with us</CTA>

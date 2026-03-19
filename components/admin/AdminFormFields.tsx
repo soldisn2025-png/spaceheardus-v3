@@ -10,7 +10,7 @@ export function Field({
   label: string
   multiline?: boolean
   onChange: (value: string) => void
-  type?: 'text' | 'url'
+  type?: 'email' | 'text' | 'url'
   value: string
 }) {
   return (

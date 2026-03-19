@@ -1,22 +1,12 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { links } from '@/content/links'
+import { BookingRequestForm } from '@/components/forms/BookingRequestForm'
 
 export const metadata: Metadata = {
-  title: 'Book a Performance | Space Heard Us — Fairfax, VA',
+  title: 'Book a Performance | Space Heard Us - Fairfax, VA',
   description:
-    'Request a performance from Space Heard Us — an inclusive youth nonprofit band in Fairfax, VA. We perform at churches, hospitals, daycares, and community events across Northern Virginia.',
+    'Request a performance from Space Heard Us - an inclusive youth nonprofit band in Fairfax, VA. We perform at churches, hospitals, daycares, and community events across Northern Virginia.',
 }
-
-const venueTypes = [
-  'Church / House of worship',
-  'Hospital / Healthcare facility',
-  'Daycare / Preschool',
-  'School or educational program',
-  'Community event or festival',
-  'Senior living or assisted care',
-  'Other',
-]
 
 export default function BookPage() {
   return (
@@ -24,14 +14,14 @@ export default function BookPage() {
       <section className="py-24 px-6 text-center">
         <div className="max-w-3xl mx-auto">
           <span className="inline-block px-4 py-1.5 rounded-full border border-amber-300 text-amber-800 text-xs font-semibold tracking-widest uppercase mb-6 bg-white/70">
-            Fairfax, VA · Northern Virginia
+            Fairfax, VA - Northern Virginia
           </span>
           <h1 className="font-playfair text-5xl md:text-6xl text-stone-900 font-bold mb-4">
             Book a Performance
           </h1>
           <p className="text-stone-600 font-inter text-lg max-w-xl mx-auto">
             Bring the joy of inclusive music to your community. We perform at churches, hospitals, daycares,
-            and events across Northern Virginia — free or by donation.
+            and events across Northern Virginia - free or by donation.
           </p>
         </div>
       </section>
@@ -59,110 +49,7 @@ export default function BookPage() {
               Fill out the form below and we&apos;ll be in touch within a few days.
             </p>
 
-            <form action={links.contactForm} method="POST" className="grid grid-cols-1 gap-5">
-              <input type="hidden" name="_subject" value="Performance Booking Request — Space Heard Us" />
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-stone-700 font-inter text-sm font-semibold mb-1.5">
-                    Your Name <span className="text-amber-600">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="contact_name"
-                    required
-                    placeholder="Jane Smith"
-                    className="w-full rounded-xl bg-[#fffdf6] border border-amber-200 px-4 py-3 outline-none focus:border-amber-500 font-inter text-sm"
-                  />
-                </div>
-                <div>
-                  <label className="block text-stone-700 font-inter text-sm font-semibold mb-1.5">
-                    Organization / Venue <span className="text-amber-600">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="organization"
-                    required
-                    placeholder="Fairfax Community Church"
-                    className="w-full rounded-xl bg-[#fffdf6] border border-amber-200 px-4 py-3 outline-none focus:border-amber-500 font-inter text-sm"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-stone-700 font-inter text-sm font-semibold mb-1.5">
-                    Email <span className="text-amber-600">*</span>
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    required
-                    placeholder="jane@example.org"
-                    className="w-full rounded-xl bg-[#fffdf6] border border-amber-200 px-4 py-3 outline-none focus:border-amber-500 font-inter text-sm"
-                  />
-                </div>
-                <div>
-                  <label className="block text-stone-700 font-inter text-sm font-semibold mb-1.5">
-                    Phone (optional)
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="(703) 555-0000"
-                    className="w-full rounded-xl bg-[#fffdf6] border border-amber-200 px-4 py-3 outline-none focus:border-amber-500 font-inter text-sm"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-stone-700 font-inter text-sm font-semibold mb-1.5">
-                  Venue Type <span className="text-amber-600">*</span>
-                </label>
-                <select
-                  name="venue_type"
-                  required
-                  className="w-full rounded-xl bg-[#fffdf6] border border-amber-200 px-4 py-3 outline-none focus:border-amber-500 font-inter text-sm text-stone-700"
-                >
-                  <option value="">Select a venue type…</option>
-                  {venueTypes.map((v) => (
-                    <option key={v} value={v}>{v}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-stone-700 font-inter text-sm font-semibold mb-1.5">
-                  Preferred Date(s)
-                </label>
-                <input
-                  type="text"
-                  name="preferred_dates"
-                  placeholder="e.g. any Saturday in May, or April 12"
-                  className="w-full rounded-xl bg-[#fffdf6] border border-amber-200 px-4 py-3 outline-none focus:border-amber-500 font-inter text-sm"
-                />
-              </div>
-
-              <div>
-                <label className="block text-stone-700 font-inter text-sm font-semibold mb-1.5">
-                  Tell us about your event <span className="text-amber-600">*</span>
-                </label>
-                <textarea
-                  name="message"
-                  required
-                  rows={4}
-                  placeholder="Describe the event, expected audience size, any special considerations…"
-                  className="w-full rounded-xl bg-[#fffdf6] border border-amber-200 px-4 py-3 outline-none focus:border-amber-500 font-inter text-sm"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="mt-1 inline-flex justify-center px-8 py-4 bg-amber-500 text-white font-bold rounded-full hover:bg-amber-600 transition-colors shadow-lg shadow-amber-500/25"
-              >
-                Send Booking Request
-              </button>
-            </form>
+            <BookingRequestForm />
           </div>
         </div>
       </section>

@@ -17,6 +17,11 @@
     "volunteerText": "Join our team of volunteers and be part of something meaningful.",
     "contactTitle": "Contact Us",
     "contactText": "Send us a message for performances, collaboration, or volunteer questions."
+  },
+  "settings": {
+    "volunteerFormUrl": "https://www.signupgenius.com/go/your-actual-form",
+    "landingFormRecipientEmail": "solkim130@gmail.com",
+    "bookingFormRecipientEmail": "solkim130@gmail.com"
   }
 }
 

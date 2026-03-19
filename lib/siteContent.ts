@@ -21,6 +21,11 @@ export type SiteContent = {
     volunteerText: string
     volunteerTitle: string
   }
+  settings: {
+    bookingFormRecipientEmail: string
+    landingFormRecipientEmail: string
+    volunteerFormUrl: string
+  }
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -55,6 +60,11 @@ export function normalizeSiteContent(value: unknown): SiteContent {
       missionTitle: readString(home.missionTitle),
       volunteerText: readString(home.volunteerText),
       volunteerTitle: readString(home.volunteerTitle),
+    },
+    settings: {
+      bookingFormRecipientEmail: readString(root.settings && isRecord(root.settings) ? root.settings.bookingFormRecipientEmail : undefined, 'solkim130@gmail.com'),
+      landingFormRecipientEmail: readString(root.settings && isRecord(root.settings) ? root.settings.landingFormRecipientEmail : undefined, 'solkim130@gmail.com'),
+      volunteerFormUrl: readString(root.settings && isRecord(root.settings) ? root.settings.volunteerFormUrl : undefined, 'https://www.signupgenius.com/go/your-actual-form'),
     },
   }
 }

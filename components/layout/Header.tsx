@@ -4,7 +4,10 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { navigation } from '@/content/navigation';
 import { site } from '@/content/site';
-import { links } from '@/content/links';
+import rawSiteContent from '@/content/site-content.json';
+import { normalizeSiteContent } from '@/lib/siteContent';
+
+const siteContent = normalizeSiteContent(rawSiteContent);
 export function Header() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -51,7 +54,7 @@ export function Header() {
         </nav>
         <div className="hidden md:flex md:items-center md:gap-2">
           <Link
-            href={links.volunteer || '/connect#volunteer'}
+            href={siteContent.settings.volunteerFormUrl || '/connect#volunteer'}
             className="rounded-lg px-3 py-2 text-sm font-medium text-stone-600 hover:bg-stone-100 hover:text-stone-900 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2"
           >
             Volunteer
@@ -128,7 +131,7 @@ export function Header() {
           })}
           <div className="mt-4 flex flex-col gap-2 border-t border-stone-200 pt-4">
             <Link
-              href={links.volunteer || '/connect#volunteer'}
+              href={siteContent.settings.volunteerFormUrl || '/connect#volunteer'}
               onClick={() => setMobileOpen(false)}
               className="rounded-lg px-4 py-3 text-base font-medium text-stone-600 hover:bg-stone-50"
             >

@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import { ContactForm } from '@/components/forms/ContactForm'
 import rawSiteContent from '@/content/site-content.json'
 import { teamMembers } from '@/content/team'
-import { links } from '@/content/links'
 import { DEFAULT_HERO_IMAGE, normalizeSiteContent } from '@/lib/siteContent'
 
 export const metadata: Metadata = {
@@ -22,7 +22,7 @@ function toYouTubeEmbed(url: string) {
 }
 
 export default function HomePage() {
-  const { home } = normalizeSiteContent(rawSiteContent)
+  const { home, settings } = normalizeSiteContent(rawSiteContent)
   const homeVideo = toYouTubeEmbed(home.featuredVideoUrl)
   const heroImage = home.heroImage || DEFAULT_HERO_IMAGE
 
@@ -163,7 +163,7 @@ export default function HomePage() {
           <h2 className="font-playfair text-4xl md:text-5xl text-stone-900 font-bold mb-6">{home.volunteerTitle}</h2>
           <p className="text-stone-700 mb-10 font-inter text-lg">{home.volunteerText}</p>
           <a
-            href={links.volunteer}
+            href={settings.volunteerFormUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block px-10 py-4 bg-amber-500 text-white font-bold rounded-full hover:bg-amber-600 transition-all shadow-lg shadow-amber-500/25"
@@ -178,35 +178,7 @@ export default function HomePage() {
           <h2 className="font-playfair text-3xl md:text-4xl text-stone-900 font-bold mb-4 text-center">{home.contactTitle}</h2>
           <p className="text-stone-600 font-inter text-center mb-10">{home.contactText}</p>
 
-          <form action={links.contactForm} method="POST" className="grid grid-cols-1 gap-4">
-            <input
-              type="text"
-              name="name"
-              required
-              placeholder="Your name"
-              className="w-full rounded-xl bg-white border border-amber-200 px-4 py-3 outline-none focus:border-amber-500"
-            />
-            <input
-              type="email"
-              name="email"
-              required
-              placeholder="Your email"
-              className="w-full rounded-xl bg-white border border-amber-200 px-4 py-3 outline-none focus:border-amber-500"
-            />
-            <textarea
-              name="message"
-              required
-              rows={5}
-              placeholder="Your message"
-              className="w-full rounded-xl bg-white border border-amber-200 px-4 py-3 outline-none focus:border-amber-500"
-            />
-            <button
-              type="submit"
-              className="mt-2 inline-flex justify-center px-6 py-3 bg-amber-500 text-white font-bold rounded-xl hover:bg-amber-600 transition-colors"
-            >
-              Send Message
-            </button>
-          </form>
+          <ContactForm />
         </div>
       </section>
     </>

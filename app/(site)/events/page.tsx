@@ -1,11 +1,12 @@
-import { EventHighlights } from '@/components/sections/EventHighlights'
 import eventsContentJson from '@/content/events.json'
 import { events } from '@/content/events'
-import { links } from '@/content/links'
 import { normalizeEventsContent } from '@/lib/eventsContent'
+import rawSiteContent from '@/content/site-content.json'
+import { normalizeSiteContent } from '@/lib/siteContent'
 
 export default function EventsPage() {
   const scheduleContent = normalizeEventsContent(eventsContentJson)
+  const siteContent = normalizeSiteContent(rawSiteContent)
 
   return (
     <div className="min-h-screen">
@@ -52,8 +53,6 @@ export default function EventsPage() {
               </div>
             ))}
           </div>
-
-          <EventHighlights />
         </div>
       </section>
 
@@ -62,7 +61,7 @@ export default function EventsPage() {
           <h2 className="font-playfair text-3xl text-stone-900 font-bold mb-4">{scheduleContent.page.volunteerTitle}</h2>
           <p className="text-stone-600 font-inter mb-8">{scheduleContent.page.volunteerText}</p>
           <a
-            href={links.volunteer}
+            href={siteContent.settings.volunteerFormUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block px-10 py-4 bg-amber-500 text-white font-bold rounded-full hover:bg-amber-600 transition-all shadow-lg shadow-amber-500/25"

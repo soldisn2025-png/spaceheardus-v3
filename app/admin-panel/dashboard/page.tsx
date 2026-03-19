@@ -2,6 +2,7 @@
 
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { Field } from '@/components/admin/AdminFormFields'
 import { AdminPanelNav } from '@/components/admin/AdminPanelNav'
 import { DEFAULT_HERO_IMAGE, type SiteContent } from '@/lib/siteContent'
 
@@ -11,42 +12,6 @@ type ContentResponse = {
     content: SiteContent
     sha: string
   }
-}
-
-function Field({
-  hint,
-  label,
-  multiline = false,
-  onChange,
-  value,
-}: {
-  hint?: string
-  label: string
-  multiline?: boolean
-  onChange: (value: string) => void
-  value: string
-}) {
-  return (
-    <label className="block">
-      <span className="mb-1.5 block text-sm font-medium text-stone-700">{label}</span>
-      {multiline ? (
-        <textarea
-          value={value}
-          onChange={(event) => onChange(event.target.value)}
-          rows={5}
-          className="w-full rounded-2xl border border-amber-200 px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-amber-500 focus:ring-2 focus:ring-amber-100"
-        />
-      ) : (
-        <input
-          type="text"
-          value={value}
-          onChange={(event) => onChange(event.target.value)}
-          className="w-full rounded-2xl border border-amber-200 px-4 py-3 text-sm text-stone-900 outline-none transition focus:border-amber-500 focus:ring-2 focus:ring-amber-100"
-        />
-      )}
-      {hint ? <span className="mt-1.5 block text-xs text-stone-500">{hint}</span> : null}
-    </label>
-  )
 }
 
 function readFileAsDataUrl(file: File) {
@@ -227,7 +192,7 @@ export default function AdminDashboardPage() {
             <p className="text-xs font-semibold uppercase tracking-[0.35em] text-amber-700">Admin Menu</p>
             <h1 className="mt-2 font-playfair text-4xl font-bold text-stone-900">Homepage Controls</h1>
             <p className="mt-3 max-w-2xl text-sm leading-relaxed text-stone-600">
-              Update the homepage picture, the main statement text, and the featured YouTube link from one place.
+              Update the homepage picture, text, volunteer button link, and form routing from one place.
             </p>
           </div>
 
@@ -286,6 +251,7 @@ export default function AdminDashboardPage() {
               <div className="mt-5">
                 <Field
                   label="Image path"
+                  type="text"
                   value={content.home.heroImage}
                   onChange={(value) =>
                     {
@@ -310,6 +276,7 @@ export default function AdminDashboardPage() {
               <div className="mt-5 space-y-4">
                 <Field
                   label="Hero statement"
+                  type="text"
                   value={content.home.heroSubtitle}
                   onChange={(value) =>
                     setContent({
@@ -322,6 +289,7 @@ export default function AdminDashboardPage() {
 
                 <Field
                   label="Mission statement"
+                  type="text"
                   value={content.home.missionText}
                   onChange={(value) =>
                     setContent({
@@ -345,6 +313,7 @@ export default function AdminDashboardPage() {
               <div className="mt-5 space-y-4">
                 <Field
                   label="Section title"
+                  type="text"
                   value={content.home.featuredVideoTitle}
                   onChange={(value) =>
                     setContent({
@@ -356,6 +325,7 @@ export default function AdminDashboardPage() {
 
                 <Field
                   label="YouTube URL"
+                  type="url"
                   value={content.home.featuredVideoUrl}
                   onChange={(value) =>
                     setContent({
@@ -364,6 +334,54 @@ export default function AdminDashboardPage() {
                     })
                   }
                   hint="Example: https://www.youtube.com/watch?v=abc123"
+                />
+              </div>
+            </div>
+
+            <div className="rounded-[2rem] border border-amber-200 bg-white p-6 shadow-[0_24px_80px_rgba(120,53,15,0.06)]">
+              <h2 className="text-lg font-semibold text-stone-900">Volunteer & Form Routing</h2>
+              <p className="mt-1 text-sm text-stone-500">
+                Control the top volunteer button plus where each public form notification email is sent.
+              </p>
+
+              <div className="mt-5 space-y-4">
+                <Field
+                  label="Volunteer form URL"
+                  type="url"
+                  value={content.settings.volunteerFormUrl}
+                  onChange={(value) =>
+                    setContent({
+                      ...content,
+                      settings: { ...content.settings, volunteerFormUrl: value },
+                    })
+                  }
+                  hint="Example: https://www.signupgenius.com/go/..."
+                />
+
+                <Field
+                  label="Landing page form recipient"
+                  type="email"
+                  value={content.settings.landingFormRecipientEmail}
+                  onChange={(value) =>
+                    setContent({
+                      ...content,
+                      settings: { ...content.settings, landingFormRecipientEmail: value },
+                    })
+                  }
+                  hint="Receives messages from the homepage Contact Us form."
+                />
+
+                <Field
+                  label="Book Us form recipient"
+                  type="email"
+                  value={content.settings.bookingFormRecipientEmail}
+                  onChange={(value) =>
+                    setContent({
+                      ...content,
+                      settings: { ...content.settings, bookingFormRecipientEmail: value },
+                    })
+                  }
+                  hint="Receives messages from the Book a Performance page."
                 />
               </div>
             </div>

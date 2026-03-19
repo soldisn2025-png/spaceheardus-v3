@@ -33,6 +33,9 @@ npm run dev
   - hero statement
   - mission statement
   - featured YouTube title and link
+  - volunteer form link
+  - landing-page contact form recipient email
+  - Book Us form recipient email
 
 Set these environment variables before using the admin panel:
 
@@ -42,9 +45,12 @@ Set these environment variables before using the admin panel:
 - `GITHUB_TOKEN`
 - `GITHUB_REPO` (optional, defaults to `soldisn2025-png/spaceheardus-v3`)
 - `GITHUB_BRANCH` (optional, defaults to `main`)
+- `RESEND_API_KEY`
+- `CONTACT_FROM_EMAIL`
 
 When an admin uploads a new homepage image, it is committed to `public/images/admin/`.
 When an admin saves the form, `content/site-content.json` is committed to GitHub and your deploy pipeline can publish it automatically.
+The public contact forms send email through the app using the recipient addresses saved in `content/site-content.json`.
 
 See `ADMIN.md` for the setup walkthrough.
 

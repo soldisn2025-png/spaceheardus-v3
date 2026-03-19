@@ -4,8 +4,10 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import siteContent from '@/content/site-content.json'
-import { links } from '@/content/links'
+import rawSiteContent from '@/content/site-content.json'
+import { normalizeSiteContent } from '@/lib/siteContent'
+
+const siteContent = normalizeSiteContent(rawSiteContent)
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -14,7 +16,7 @@ const navLinks = [
   { href: '/schedule', label: 'Schedule' },
   { href: '/book', label: 'Book Us' },
   { href: '/donation', label: 'Donation' },
-  { href: links.volunteer, label: 'Volunteer Form', external: true },
+  { href: siteContent.settings.volunteerFormUrl, label: 'Volunteer Form', external: true },
 ]
 
 export default function Header() {
