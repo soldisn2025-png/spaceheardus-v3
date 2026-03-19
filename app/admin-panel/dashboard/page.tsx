@@ -2,6 +2,7 @@
 
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { AdminPanelNav } from '@/components/admin/AdminPanelNav'
 import { DEFAULT_HERO_IMAGE, type SiteContent } from '@/lib/siteContent'
 
 type ContentResponse = {
@@ -247,6 +248,10 @@ export default function AdminDashboardPage() {
               Sign Out
             </button>
           </div>
+        </div>
+
+        <div className="mb-8">
+          <AdminPanelNav current="homepage" />
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">

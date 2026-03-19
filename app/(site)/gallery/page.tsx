@@ -1,5 +1,6 @@
 import Image from 'next/image'
-import galleryContent from '@/content/gallery-page.json'
+import galleryContentJson from '@/content/gallery-page.json'
+import { normalizeGalleryPageContent } from '@/lib/galleryPageContent'
 
 function toYouTubeEmbed(url: string) {
   const match = url.match(/(?:v=|youtu\.be\/)([^&?/]+)/)
@@ -8,6 +9,8 @@ function toYouTubeEmbed(url: string) {
 }
 
 export default function GalleryPage() {
+  const galleryContent = normalizeGalleryPageContent(galleryContentJson)
+
   return (
     <div className="min-h-screen">
       <section className="py-24 px-6 text-center">

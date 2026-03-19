@@ -3,6 +3,22 @@ import { requireAdminSession } from '@/lib/adminSession'
 import { uploadBase64File } from '@/lib/githubContent'
 
 const ALLOWED_EXTENSIONS = new Set(['avif', 'gif', 'jpeg', 'jpg', 'png', 'webp'])
+const IMAGE_TARGETS = {
+  gallery: {
+    defaultBaseName: 'gallery-image',
+    messageLabel: 'gallery image',
+    publicDirectory: '/images/gallery',
+    repoDirectory: 'public/images/gallery',
+  },
+  home: {
+    defaultBaseName: 'homepage-image',
+    messageLabel: 'homepage image',
+    publicDirectory: '/images/admin',
+    repoDirectory: 'public/images/admin',
+  },
+} as const
+
+type ImageTarget = keyof typeof IMAGE_TARGETS
 
 function slugify(value: string) {
   return value
@@ -11,7 +27,7 @@ function slugify(value: string) {
     .replace(/^-+|-+$/g, '')
 }
 
-function getSafeFileName(originalName: string) {
+function getSafeFileName(originalName: string, fallbackBaseName: string) {
   const trimmed = originalName.trim()
   const lastDot = trimmed.lastIndexOf('.')
   const rawName = lastDot > 0 ? trimmed.slice(0, lastDot) : trimmed
@@ -21,9 +37,13 @@ function getSafeFileName(originalName: string) {
     return null
   }
 
-  const safeName = slugify(rawName) || 'homepage-image'
+  const safeName = slugify(rawName) || fallbackBaseName
 
   return `${Date.now()}-${safeName}.${extension}`
+}
+
+function readImageTarget(value: unknown): ImageTarget {
+  return value === 'gallery' ? 'gallery' : 'home'
 }
 
 export async function POST(request: NextRequest) {
@@ -36,11 +56,13 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json() as {
       base64?: string
+      collection?: string
       fileName?: string
     }
     const fileName = body.fileName ?? ''
     const base64 = body.base64 ?? ''
-    const safeFileName = getSafeFileName(fileName)
+    const imageTarget = IMAGE_TARGETS[readImageTarget(body.collection)]
+    const safeFileName = getSafeFileName(fileName, imageTarget.defaultBaseName)
 
     if (!safeFileName || !base64) {
       return NextResponse.json(
@@ -49,12 +71,12 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const repoPath = `public/images/admin/${safeFileName}`
+    const repoPath = `${imageTarget.repoDirectory}/${safeFileName}`
 
-    await uploadBase64File(repoPath, base64, `admin: upload homepage image ${safeFileName}`)
+    await uploadBase64File(repoPath, base64, `admin: upload ${imageTarget.messageLabel} ${safeFileName}`)
 
     return NextResponse.json({
-      path: `/images/admin/${safeFileName}`,
+      path: `${imageTarget.publicDirectory}/${safeFileName}`,
       success: true,
     })
   } catch (error) {

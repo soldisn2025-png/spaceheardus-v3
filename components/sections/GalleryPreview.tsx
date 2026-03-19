@@ -2,14 +2,14 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { galleryImages } from '@/content/gallery';
+import galleryContentJson from '@/content/gallery-page.json';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { CTA } from '@/components/ui/CTA';
+import { normalizeGalleryPageContent } from '@/lib/galleryPageContent';
 
 export function GalleryPreview() {
   const [lightbox, setLightbox] = useState<string | null>(null);
-  const preview = galleryImages.slice(0, 6);
+  const preview = normalizeGalleryPageContent(galleryContentJson).photos.slice(0, 6);
 
   return (
     <section className="bg-stone-50 py-16 sm:py-20">
@@ -38,9 +38,6 @@ export function GalleryPreview() {
                   target.style.display = 'none';
                 }}
               />
-              <div className="absolute inset-0 bg-stone-200 flex items-center justify-center text-stone-500 text-xs hidden group-focus-within:flex [.group:has(+*)]:flex" aria-hidden>
-                Add image to public/images/gallery/
-              </div>
             </button>
           ))}
         </div>

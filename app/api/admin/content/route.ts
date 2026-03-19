@@ -2,9 +2,42 @@ import { NextRequest, NextResponse } from 'next/server'
 import { requireAdminSession } from '@/lib/adminSession'
 import { getJsonFile, updateJsonFile } from '@/lib/githubContent'
 import {
+  EVENTS_CONTENT_PATH,
+  normalizeEventsContent,
+} from '@/lib/eventsContent'
+import {
+  GALLERY_PAGE_CONTENT_PATH,
+  normalizeGalleryPageContent,
+} from '@/lib/galleryPageContent'
+import {
   normalizeSiteContent,
   SITE_CONTENT_PATH,
 } from '@/lib/siteContent'
+
+const ADMIN_CONTENT_FILES = {
+  events: {
+    normalize: normalizeEventsContent,
+    path: EVENTS_CONTENT_PATH,
+  },
+  'gallery-page': {
+    normalize: normalizeGalleryPageContent,
+    path: GALLERY_PAGE_CONTENT_PATH,
+  },
+  'site-content': {
+    normalize: normalizeSiteContent,
+    path: SITE_CONTENT_PATH,
+  },
+} as const
+
+type AdminContentFile = keyof typeof ADMIN_CONTENT_FILES
+
+function readAdminContentFile(value: string | null): AdminContentFile | null {
+  if (!value) {
+    return 'site-content'
+  }
+
+  return value in ADMIN_CONTENT_FILES ? value as AdminContentFile : null
+}
 
 export async function GET(request: NextRequest) {
   const unauthorizedResponse = await requireAdminSession(request)
@@ -13,13 +46,36 @@ export async function GET(request: NextRequest) {
     return unauthorizedResponse
   }
 
+  const file = readAdminContentFile(request.nextUrl.searchParams.get('file'))
+
+  if (!file) {
+    return NextResponse.json({ error: 'Invalid file selection.' }, { status: 400 })
+  }
+
   try {
-    const siteContent = await getJsonFile(SITE_CONTENT_PATH)
+    const selectedFile = ADMIN_CONTENT_FILES[file]
+    const fileContent = await getJsonFile(selectedFile.path)
+    const normalizedContent = selectedFile.normalize(fileContent.content)
+
+    if (file === 'site-content') {
+      return NextResponse.json({
+        fileContent: {
+          content: normalizedContent,
+          file,
+          sha: fileContent.sha,
+        },
+        siteContent: {
+          content: normalizedContent,
+          sha: fileContent.sha,
+        },
+      })
+    }
 
     return NextResponse.json({
-      siteContent: {
-        content: normalizeSiteContent(siteContent.content),
-        sha: siteContent.sha,
+      fileContent: {
+        content: normalizedContent,
+        file,
+        sha: fileContent.sha,
       },
     })
   } catch (error) {
@@ -43,7 +99,9 @@ export async function PUT(request: NextRequest) {
       sha?: string
     }
 
-    if (body.file !== 'site-content') {
+    const file = readAdminContentFile(body.file ?? null)
+
+    if (!file) {
       return NextResponse.json({ error: 'Invalid file selection.' }, { status: 400 })
     }
 
@@ -51,16 +109,17 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'Missing file version.' }, { status: 400 })
     }
 
-    const normalizedContent = normalizeSiteContent(body.content)
+    const selectedFile = ADMIN_CONTENT_FILES[file]
+    const normalizedContent = selectedFile.normalize(body.content)
 
     await updateJsonFile(
-      SITE_CONTENT_PATH,
+      selectedFile.path,
       normalizedContent,
       body.sha,
-      'admin: update homepage content',
+      `admin: update ${file} content`,
     )
 
-    return NextResponse.json({ success: true })
+    return NextResponse.json({ file, success: true })
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Could not save content.'
 

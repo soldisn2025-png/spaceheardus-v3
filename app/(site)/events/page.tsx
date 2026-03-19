@@ -1,18 +1,22 @@
 import { EventHighlights } from '@/components/sections/EventHighlights'
+import eventsContentJson from '@/content/events.json'
 import { events } from '@/content/events'
 import { links } from '@/content/links'
+import { normalizeEventsContent } from '@/lib/eventsContent'
 
 export default function EventsPage() {
+  const scheduleContent = normalizeEventsContent(eventsContentJson)
+
   return (
     <div className="min-h-screen">
       <section className="py-24 px-6 text-center">
         <div className="max-w-4xl mx-auto">
           <span className="inline-block px-4 py-1.5 rounded-full border border-amber-300 text-amber-800 text-xs font-semibold tracking-widest uppercase mb-6 bg-white/70">
-            Schedule
+            {scheduleContent.page.badge}
           </span>
-          <h1 className="font-playfair text-5xl md:text-6xl text-stone-900 font-bold mb-4">Rehearsals & Events</h1>
+          <h1 className="font-playfair text-5xl md:text-6xl text-stone-900 font-bold mb-4">{scheduleContent.page.title}</h1>
           <p className="text-stone-600 font-inter text-lg max-w-2xl mx-auto">
-            Here is our current rehearsal and performance schedule in English.
+            {scheduleContent.page.intro}
           </p>
         </div>
       </section>
@@ -20,14 +24,14 @@ export default function EventsPage() {
       <section className="px-6 pb-16">
         <div className="max-w-5xl mx-auto">
           <div className="mb-8 rounded-3xl border border-amber-200 bg-gradient-to-r from-[#fff8db] via-white to-[#fff2c7] p-8 shadow-sm">
-            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-amber-700">Rehearsal Schedule</p>
-            <h2 className="mt-3 font-playfair text-3xl text-stone-900 font-bold">Every 2nd and 4th Sunday</h2>
-            <p className="mt-2 text-lg font-semibold text-stone-800">11:15 AM - 12:00 PM</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-amber-700">{scheduleContent.page.rehearsalLabel}</p>
+            <h2 className="mt-3 font-playfair text-3xl text-stone-900 font-bold">{scheduleContent.page.rehearsalTitle}</h2>
+            <p className="mt-2 text-lg font-semibold text-stone-800">{scheduleContent.page.rehearsalTime}</p>
           </div>
 
           <div className="mb-6">
-            <h2 className="font-playfair text-3xl text-stone-900 font-bold mb-2">Upcoming Performances</h2>
-            <p className="text-stone-600 font-inter">Dates marked as TBD will be updated as details are confirmed.</p>
+            <h2 className="font-playfair text-3xl text-stone-900 font-bold mb-2">{scheduleContent.page.performancesTitle}</h2>
+            <p className="text-stone-600 font-inter">{scheduleContent.page.performancesIntro}</p>
           </div>
 
           <div className="grid gap-6">
@@ -55,8 +59,8 @@ export default function EventsPage() {
 
       <section className="py-16 px-6 text-center border-t border-amber-200">
         <div className="max-w-2xl mx-auto">
-          <h2 className="font-playfair text-3xl text-stone-900 font-bold mb-4">Want to Help at Our Next Event?</h2>
-          <p className="text-stone-600 font-inter mb-8">We are always looking for volunteers.</p>
+          <h2 className="font-playfair text-3xl text-stone-900 font-bold mb-4">{scheduleContent.page.volunteerTitle}</h2>
+          <p className="text-stone-600 font-inter mb-8">{scheduleContent.page.volunteerText}</p>
           <a
             href={links.volunteer}
             target="_blank"

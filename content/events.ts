@@ -1,20 +1,6 @@
-/**
- * Upcoming events. Editable via Admin ( /admin ) or content/events.json.
- */
-export interface EventItem {
-  id: string;
-  title: string;
-  date: string;
-  time: string;
-  location: string;
-  locationDetail?: string;
-  description: string;
-  type: 'performance' | 'rehearsal' | 'community' | 'other';
-  rsvpLink?: string;
-  rsvpLabel?: string;
-  isComingSoon?: boolean;
-}
+import eventsJson from './events.json'
+import { type EventItem, normalizeEventsContent } from '@/lib/eventsContent'
 
-import eventsJson from './events.json';
+export type { EventItem }
 
-export const events = eventsJson.events as EventItem[];
+export const events = normalizeEventsContent(eventsJson).events
