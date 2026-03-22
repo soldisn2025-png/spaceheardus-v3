@@ -1,4 +1,3 @@
-import { cache } from 'react'
 import localEventsContent from '@/content/events.json'
 import localGalleryPageContent from '@/content/gallery-page.json'
 import localLinksContent from '@/content/links.json'
@@ -126,7 +125,9 @@ function normalizeTeamMembers(value: unknown): LiveTeamMember[] {
     .sort((first, second) => first.order - second.order)
 }
 
-export const getLiveSiteContent = cache(async (): Promise<SiteContent> => {
+// Keep these loaders uncached at the module level so warm Worker instances do not
+// continue serving stale GitHub-backed content for minutes after an admin save.
+export async function getLiveSiteContent(): Promise<SiteContent> {
   const content = await fetchLiveJson(SITE_CONTENT_PATH, localSiteContent, normalizeSiteContent)
 
   return {
@@ -140,13 +141,13 @@ export const getLiveSiteContent = cache(async (): Promise<SiteContent> => {
       logo: resolveRepoAssetUrl(content.site.logo),
     },
   }
-})
+}
 
-export const getLiveEventsContent = cache(async (): Promise<EventsContent> => {
+export async function getLiveEventsContent(): Promise<EventsContent> {
   return fetchLiveJson(EVENTS_CONTENT_PATH, localEventsContent, normalizeEventsContent)
-})
+}
 
-export const getLiveGalleryPageContent = cache(async (): Promise<GalleryPageContent> => {
+export async function getLiveGalleryPageContent(): Promise<GalleryPageContent> {
   const content = await fetchLiveJson(GALLERY_PAGE_CONTENT_PATH, localGalleryPageContent, normalizeGalleryPageContent)
 
   return {
@@ -156,12 +157,12 @@ export const getLiveGalleryPageContent = cache(async (): Promise<GalleryPageCont
       src: resolveRepoAssetUrl(photo.src),
     })),
   }
-})
+}
 
-export const getLiveLinks = cache(async (): Promise<LiveSiteLinks> => {
+export async function getLiveLinks(): Promise<LiveSiteLinks> {
   return fetchLiveJson(LINKS_CONTENT_PATH, localLinksContent, normalizeLinksContent)
-})
+}
 
-export const getLiveTeamMembers = cache(async (): Promise<LiveTeamMember[]> => {
+export async function getLiveTeamMembers(): Promise<LiveTeamMember[]> {
   return fetchLiveJson(TEAM_CONTENT_PATH, localTeamContent, normalizeTeamMembers)
-})
+}

@@ -50,7 +50,7 @@ Code changes still need a normal Cloudflare deploy. To enable automatic code dep
 4. Update the statement text, volunteer link, or form recipient emails
 5. Click `Save & Publish`
 
-The admin panel writes the updates to GitHub. Content edits should appear on the public site after a refresh within a few seconds.
+The admin panel writes the updates to GitHub. Content edits usually appear on the public site within about a minute. If they do not, wait 2-3 minutes and refresh again.
 
 ## Notes
 
