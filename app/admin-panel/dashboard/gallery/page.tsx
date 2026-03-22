@@ -283,7 +283,7 @@ export default function AdminGalleryPage() {
         return
       }
 
-      setSuccess('Saved to GitHub. Your live site will update after the next deployment finishes.')
+      setSuccess('Saved to GitHub. The live site should update on refresh in a few seconds.')
       await loadContent()
     } catch {
       setError('Could not save the gallery settings.')
@@ -476,7 +476,7 @@ export default function AdminGalleryPage() {
             <div className="rounded-[2rem] border border-amber-200 bg-gradient-to-br from-[#fff7dd] via-white to-[#fff1cf] p-6 shadow-[0_24px_80px_rgba(120,53,15,0.06)]">
               <h2 className="text-lg font-semibold text-stone-900">Publish Gallery</h2>
               <p className="mt-1 text-sm leading-relaxed text-stone-600">
-                Saving writes the new gallery text, videos, and photo list to GitHub.
+                Saving writes the new gallery text, videos, and photo list to GitHub. The public gallery reads this content live, so updates should show up on refresh without a redeploy.
               </p>
 
               {error ? (

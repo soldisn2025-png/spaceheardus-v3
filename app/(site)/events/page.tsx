@@ -1,11 +1,10 @@
-import eventsContentJson from '@/content/events.json'
-import { normalizeEventsContent } from '@/lib/eventsContent'
-import rawSiteContent from '@/content/site-content.json'
-import { normalizeSiteContent } from '@/lib/siteContent'
+import { getLiveEventsContent, getLiveSiteContent } from '@/lib/liveContent'
 
-export default function EventsPage() {
-  const scheduleContent = normalizeEventsContent(eventsContentJson)
-  const siteContent = normalizeSiteContent(rawSiteContent)
+export default async function EventsPage() {
+  const [scheduleContent, siteContent] = await Promise.all([
+    getLiveEventsContent(),
+    getLiveSiteContent(),
+  ])
 
   return (
     <div className="min-h-screen">

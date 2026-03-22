@@ -4,25 +4,26 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import rawSiteContent from '@/content/site-content.json'
-import { normalizeSiteContent } from '@/lib/siteContent'
 
-const siteContent = normalizeSiteContent(rawSiteContent)
+type HeaderProps = {
+  logoSrc: string
+  siteName: string
+  volunteerFormUrl: string
+}
 
-const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/team', label: 'Team' },
-  { href: '/gallery', label: 'Gallery' },
-  { href: '/schedule', label: 'Schedule' },
-  { href: '/book', label: 'Book Us' },
-  { href: '/donation', label: 'Donation' },
-  { href: siteContent.settings.volunteerFormUrl, label: 'Volunteer Form', external: true },
-]
-
-export default function Header() {
+export default function Header({ logoSrc, siteName, volunteerFormUrl }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [logoError, setLogoError] = useState(false)
   const pathname = usePathname()
+  const navLinks = [
+    { href: '/', label: 'Home' },
+    { href: '/team', label: 'Team' },
+    { href: '/gallery', label: 'Gallery' },
+    { href: '/schedule', label: 'Schedule' },
+    { href: '/book', label: 'Book Us' },
+    { href: '/donation', label: 'Donation' },
+    { href: volunteerFormUrl, label: 'Volunteer Form', external: true },
+  ]
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-[#fffdf6]/90 backdrop-blur-md border-b border-amber-200">
@@ -31,7 +32,7 @@ export default function Header() {
           <div className="w-10 h-10 rounded-full bg-white/95 flex items-center justify-center overflow-hidden shadow-lg">
             {!logoError ? (
               <Image
-                src={siteContent.site.logo}
+                src={logoSrc}
                 alt="Space Heard Us logo"
                 width={40}
                 height={40}
@@ -43,7 +44,7 @@ export default function Header() {
             )}
           </div>
           <span className="font-bold text-stone-900 text-lg tracking-tight group-hover:text-amber-700 transition-colors">
-            Space Heard Us
+            {siteName}
           </span>
         </Link>
 

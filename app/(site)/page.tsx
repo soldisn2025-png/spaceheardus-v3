@@ -2,9 +2,8 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ContactForm } from '@/components/forms/ContactForm'
-import rawSiteContent from '@/content/site-content.json'
-import { teamMembers } from '@/content/team'
-import { DEFAULT_HERO_IMAGE, normalizeSiteContent } from '@/lib/siteContent'
+import { DEFAULT_HERO_IMAGE } from '@/lib/siteContent'
+import { getLiveSiteContent, getLiveTeamMembers } from '@/lib/liveContent'
 
 export const metadata: Metadata = {
   title: 'Space Heard Us | Inclusive Youth Nonprofit Band in Fairfax, VA',
@@ -21,8 +20,11 @@ function toYouTubeEmbed(url: string) {
   return videoId ? `https://www.youtube.com/embed/${videoId}` : ''
 }
 
-export default function HomePage() {
-  const { home, settings } = normalizeSiteContent(rawSiteContent)
+export default async function HomePage() {
+  const [{ home, settings }, teamMembers] = await Promise.all([
+    getLiveSiteContent(),
+    getLiveTeamMembers(),
+  ])
   const homeVideo = toYouTubeEmbed(home.featuredVideoUrl)
   const heroImage = home.heroImage || DEFAULT_HERO_IMAGE
 

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { teamMembers } from '@/content/team'
+import { getLiveTeamMembers } from '@/lib/liveContent'
 
 export const metadata: Metadata = {
   title: 'Meet the Band | Space Heard Us — Inclusive Youth Musicians in Fairfax, VA',
@@ -15,7 +15,9 @@ const instruments: Record<string, string> = {
   'eric-kim': 'Vocal',
 }
 
-export default function MeetThePlayersPage() {
+export default async function MeetThePlayersPage() {
+  const teamMembers = await getLiveTeamMembers()
+
   return (
     <div className="min-h-screen">
       <section className="py-24 px-6 text-center">

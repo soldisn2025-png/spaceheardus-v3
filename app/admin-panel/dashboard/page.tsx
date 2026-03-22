@@ -147,7 +147,7 @@ export default function AdminDashboardPage() {
         return
       }
 
-      setSuccess('Saved to GitHub. Your live site will update after the next deployment finishes.')
+      setSuccess('Saved to GitHub. The live site should update on refresh in a few seconds.')
       await loadContent()
     } catch {
       setError('Could not save the homepage settings.')
@@ -389,7 +389,7 @@ export default function AdminDashboardPage() {
             <div className="rounded-[2rem] border border-amber-200 bg-gradient-to-br from-[#fff7dd] via-white to-[#fff1cf] p-6 shadow-[0_24px_80px_rgba(120,53,15,0.06)]">
               <h2 className="text-lg font-semibold text-stone-900">Publish</h2>
               <p className="mt-1 text-sm leading-relaxed text-stone-600">
-                Saving writes the updated content to GitHub. If the site is connected to Cloudflare or another auto-deploy target, the new content will go live after the deploy finishes.
+                Saving writes the updated content to GitHub. The live site reads this content directly, so homepage changes should show up on refresh without a redeploy.
               </p>
 
               {error ? (

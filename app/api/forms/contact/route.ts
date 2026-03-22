@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Please enter a valid email address.' }, { status: 400 })
     }
 
-    const { landingFormRecipientEmail } = getFormSettings()
+    const { landingFormRecipientEmail } = await getFormSettings()
 
     await sendEmail({
       subject: `Space Heard Us contact form: ${name}`,

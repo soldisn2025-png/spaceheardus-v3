@@ -1,6 +1,5 @@
 import Image from 'next/image'
-import galleryContentJson from '@/content/gallery-page.json'
-import { normalizeGalleryPageContent } from '@/lib/galleryPageContent'
+import { getLiveGalleryPageContent } from '@/lib/liveContent'
 
 function toYouTubeEmbed(url: string) {
   const match = url.match(/(?:v=|youtu\.be\/)([^&?/]+)/)
@@ -8,8 +7,8 @@ function toYouTubeEmbed(url: string) {
   return videoId ? `https://www.youtube.com/embed/${videoId}` : ''
 }
 
-export default function GalleryPage() {
-  const galleryContent = normalizeGalleryPageContent(galleryContentJson)
+export default async function GalleryPage() {
+  const galleryContent = await getLiveGalleryPageContent()
 
   return (
     <div className="min-h-screen">

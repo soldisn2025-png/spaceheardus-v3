@@ -5,7 +5,15 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 /** @type {import("next").NextConfig} */
 const nextConfig = {
-  images: { unoptimized: true },
+  images: {
+    remotePatterns: [
+      {
+        hostname: 'raw.githubusercontent.com',
+        protocol: 'https',
+      },
+    ],
+    unoptimized: true,
+  },
   typescript: { ignoreBuildErrors: true },
   eslint: { ignoreDuringBuilds: true },
   outputFileTracingRoot: __dirname,

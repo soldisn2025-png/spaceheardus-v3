@@ -33,11 +33,11 @@ CONTACT_FROM_EMAIL=Space Heard Us <onboarding@resend.dev>
 The `GITHUB_TOKEN` should be a personal access token that can update the repo contents.
 Make sure it can write to `content/site-content.json` and upload files under `public/images/admin/`.
 
-## Automatic deploys
+## Live content updates
 
-Saving in the admin panel only commits content changes to GitHub. The public site updates after Cloudflare deploys a new Worker build from that commit.
+Saving in the admin panel commits content changes to GitHub. The public site reads the latest content and uploaded image paths from GitHub at runtime, so homepage, schedule, gallery, and form-recipient changes do not require a redeploy.
 
-To enable automatic deploys from admin saves, add these GitHub repository secrets and keep the `deploy-worker.yml` workflow enabled:
+Code changes still need a normal Cloudflare deploy. To enable automatic code deploys from GitHub, add these repository secrets and keep the `deploy-worker.yml` workflow enabled:
 
 - `CLOUDFLARE_ACCOUNT_ID`
 - `CLOUDFLARE_API_TOKEN`
@@ -50,7 +50,7 @@ To enable automatic deploys from admin saves, add these GitHub repository secret
 4. Update the statement text, volunteer link, or form recipient emails
 5. Click `Save & Publish`
 
-The admin panel writes the updates to GitHub. The public site updates after the deploy workflow or Workers Builds finishes.
+The admin panel writes the updates to GitHub. Content edits should appear on the public site after a refresh within a few seconds.
 
 ## Notes
 

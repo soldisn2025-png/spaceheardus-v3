@@ -48,11 +48,11 @@ Set these environment variables before using the admin panel:
 - `RESEND_API_KEY`
 - `CONTACT_FROM_EMAIL`
 
-When an admin uploads a new homepage image, it is committed to `public/images/admin/`.
-When an admin saves the form, `content/site-content.json` is committed to GitHub and your deploy pipeline can publish it automatically.
-The public contact forms send email through the app using the recipient addresses saved in `content/site-content.json`.
+When an admin uploads a new homepage or gallery image, it is committed to GitHub under `public/images/...`.
+When an admin saves content, the public site reads the latest JSON and image paths from GitHub at runtime, so homepage, schedule, gallery, and form-recipient changes do not require a redeploy.
+The public contact forms send email through the live recipient addresses saved in `content/site-content.json`.
 
-For automatic Cloudflare deploys after each admin save, add `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` as GitHub repository secrets and enable `.github/workflows/deploy-worker.yml`.
+Code changes still require a normal Cloudflare deploy. The optional `.github/workflows/deploy-worker.yml` workflow covers code deploys if you add `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` as GitHub repository secrets.
 
 See `ADMIN.md` for the setup walkthrough.
 

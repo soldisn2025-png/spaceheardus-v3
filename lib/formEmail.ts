@@ -1,5 +1,4 @@
-import rawSiteContent from '@/content/site-content.json'
-import { normalizeSiteContent } from '@/lib/siteContent'
+import { getLiveSiteContent } from '@/lib/liveContent'
 
 const RESEND_API_URL = 'https://api.resend.com/emails'
 const DEFAULT_FROM_EMAIL = 'Space Heard Us <onboarding@resend.dev>'
@@ -10,8 +9,8 @@ type SendEmailInput = {
   to: string
 }
 
-export function getFormSettings() {
-  return normalizeSiteContent(rawSiteContent).settings
+export async function getFormSettings() {
+  return (await getLiveSiteContent()).settings
 }
 
 export async function sendEmail({ subject, text, to }: SendEmailInput) {

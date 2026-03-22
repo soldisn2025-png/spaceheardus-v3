@@ -1,6 +1,7 @@
-import { links } from '@/content/links'
+import { getLiveLinks } from '@/lib/liveContent'
 
-export default function DonationPage() {
+export default async function DonationPage() {
+  const links = await getLiveLinks()
   const zeffyUrl = links.zeffy || links.donate
   const paypalUrl = links.paypalDonate
 
