@@ -22,6 +22,7 @@ function createItemId(prefix: string) {
 export default function AdminSchedulePage() {
   const router = useRouter()
   const [content, setContent] = useState<EventsContent | null>(null)
+  const [baseContent, setBaseContent] = useState<EventsContent | null>(null)
   const [fileSha, setFileSha] = useState('')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -48,6 +49,7 @@ export default function AdminSchedulePage() {
       }
 
       setContent(data.fileContent.content)
+      setBaseContent(data.fileContent.content)
       setFileSha(data.fileContent.sha)
     } catch {
       setError('Could not load the schedule settings.')
@@ -130,7 +132,7 @@ export default function AdminSchedulePage() {
   }
 
   async function handleSave() {
-    if (!content || !fileSha) {
+    if (!content || !baseContent || !fileSha) {
       return
     }
 
@@ -143,6 +145,7 @@ export default function AdminSchedulePage() {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          baseContent,
           content,
           file: 'events',
           sha: fileSha,
@@ -155,7 +158,11 @@ export default function AdminSchedulePage() {
         return
       }
 
-      setSuccess('Saved to GitHub. The live site should update on refresh in a few seconds.')
+      setSuccess(
+        'merged' in data && data.merged
+          ? 'Saved to GitHub. Another change was merged automatically, so your schedule edits still went through.'
+          : 'Saved to GitHub. The live site should update on refresh in a few seconds.',
+      )
       await loadContent()
     } catch {
       setError('Could not save the schedule settings.')

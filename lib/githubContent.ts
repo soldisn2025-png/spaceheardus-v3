@@ -8,6 +8,17 @@ type GitHubFileResponse = {
   sha: string
 }
 
+export class GitHubContentConflictError extends Error {
+  constructor(
+    message: string,
+    public readonly filePath: string,
+    public readonly expectedSha: string | null,
+  ) {
+    super(message)
+    this.name = 'GitHubContentConflictError'
+  }
+}
+
 function encodeBase64(value: string) {
   const bytes = new TextEncoder().encode(value)
   let binary = ''
@@ -99,7 +110,14 @@ export async function updateJsonFile(path: string, content: unknown, sha: string
   })
 
   if (!response.ok) {
-    throw new Error(await readGitHubError(response))
+    const errorMessage = await readGitHubError(response)
+
+    if (response.status === 409) {
+      const matchedSha = errorMessage.match(/does not match ([0-9a-f]{40})/i)?.[1] ?? null
+      throw new GitHubContentConflictError(errorMessage, path, matchedSha)
+    }
+
+    throw new Error(errorMessage)
   }
 }
 

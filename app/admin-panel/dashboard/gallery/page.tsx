@@ -41,6 +41,7 @@ function readFileAsDataUrl(file: File) {
 export default function AdminGalleryPage() {
   const router = useRouter()
   const [content, setContent] = useState<GalleryPageContent | null>(null)
+  const [baseContent, setBaseContent] = useState<GalleryPageContent | null>(null)
   const [fileSha, setFileSha] = useState('')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -69,6 +70,7 @@ export default function AdminGalleryPage() {
       }
 
       setContent(data.fileContent.content)
+      setBaseContent(data.fileContent.content)
       setFileSha(data.fileContent.sha)
       setPhotoPreviews({})
     } catch {
@@ -259,7 +261,7 @@ export default function AdminGalleryPage() {
   }
 
   async function handleSave() {
-    if (!content || !fileSha) {
+    if (!content || !baseContent || !fileSha) {
       return
     }
 
@@ -272,6 +274,7 @@ export default function AdminGalleryPage() {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          baseContent,
           content,
           file: 'gallery-page',
           sha: fileSha,
@@ -284,7 +287,11 @@ export default function AdminGalleryPage() {
         return
       }
 
-      setSuccess('Saved to GitHub. The live site should update on refresh in a few seconds.')
+      setSuccess(
+        'merged' in data && data.merged
+          ? 'Saved to GitHub. Another change was merged automatically, so your gallery edits still went through.'
+          : 'Saved to GitHub. The live site should update on refresh in a few seconds.',
+      )
       await loadContent()
     } catch {
       setError('Could not save the gallery settings.')

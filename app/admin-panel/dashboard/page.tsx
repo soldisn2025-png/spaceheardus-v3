@@ -36,6 +36,7 @@ function readFileAsDataUrl(file: File) {
 export default function AdminDashboardPage() {
   const router = useRouter()
   const [content, setContent] = useState<SiteContent | null>(null)
+  const [baseContent, setBaseContent] = useState<SiteContent | null>(null)
   const [fileSha, setFileSha] = useState('')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -64,6 +65,7 @@ export default function AdminDashboardPage() {
       }
 
       setContent(data.siteContent.content)
+      setBaseContent(data.siteContent.content)
       setFileSha(data.siteContent.sha)
     } catch {
       setError('Could not load the homepage settings.')
@@ -123,7 +125,7 @@ export default function AdminDashboardPage() {
   }
 
   async function handleSave() {
-    if (!content || !fileSha) {
+    if (!content || !baseContent || !fileSha) {
       return
     }
 
@@ -136,6 +138,7 @@ export default function AdminDashboardPage() {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          baseContent,
           content,
           file: 'site-content',
           sha: fileSha,
@@ -148,7 +151,11 @@ export default function AdminDashboardPage() {
         return
       }
 
-      setSuccess('Saved to GitHub. The live site should update on refresh in a few seconds.')
+      setSuccess(
+        'merged' in data && data.merged
+          ? 'Saved to GitHub. Another change was merged automatically, so your homepage edits still went through.'
+          : 'Saved to GitHub. The live site should update on refresh in a few seconds.',
+      )
       await loadContent()
     } catch {
       setError('Could not save the homepage settings.')

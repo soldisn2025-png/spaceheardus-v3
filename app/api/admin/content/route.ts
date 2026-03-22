@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdminSession } from '@/lib/adminSession'
-import { getJsonFile, updateJsonFile } from '@/lib/githubContent'
+import { mergeAdminContent } from '@/lib/adminContentMerge'
+import { GitHubContentConflictError, getJsonFile, updateJsonFile } from '@/lib/githubContent'
 import {
   EVENTS_CONTENT_PATH,
   normalizeEventsContent,
@@ -94,6 +95,7 @@ export async function PUT(request: NextRequest) {
 
   try {
     const body = await request.json() as {
+      baseContent?: unknown
       content?: unknown
       file?: string
       sha?: string
@@ -112,12 +114,57 @@ export async function PUT(request: NextRequest) {
     const selectedFile = ADMIN_CONTENT_FILES[file]
     const normalizedContent = selectedFile.normalize(body.content)
 
-    await updateJsonFile(
-      selectedFile.path,
-      normalizedContent,
-      body.sha,
-      `admin: update ${file} content`,
-    )
+    try {
+      await updateJsonFile(
+        selectedFile.path,
+        normalizedContent,
+        body.sha,
+        `admin: update ${file} content`,
+      )
+    } catch (error) {
+      if (!(error instanceof GitHubContentConflictError)) {
+        throw error
+      }
+
+      const latestFile = await getJsonFile(selectedFile.path)
+      const latestContent = selectedFile.normalize(latestFile.content)
+
+      if (body.baseContent) {
+        const baseContent = selectedFile.normalize(body.baseContent)
+        const merged = mergeAdminContent(file, baseContent, normalizedContent, latestContent)
+
+        if (merged.conflicts.length === 0) {
+          await updateJsonFile(
+            selectedFile.path,
+            merged.content,
+            latestFile.sha,
+            `admin: update ${file} content`,
+          )
+
+          return NextResponse.json({ file, merged: true, success: true })
+        }
+
+        return NextResponse.json(
+          {
+            conflict: true,
+            error: 'Someone else updated this content while you were editing. Reload the page to review the latest version before saving again.',
+            latestContent,
+            latestSha: latestFile.sha,
+          },
+          { status: 409 },
+        )
+      }
+
+      return NextResponse.json(
+        {
+          conflict: true,
+          error: 'This content changed before your save finished. Reload the page and try again.',
+          latestContent,
+          latestSha: latestFile.sha,
+        },
+        { status: 409 },
+      )
+    }
 
     return NextResponse.json({ file, success: true })
   } catch (error) {
