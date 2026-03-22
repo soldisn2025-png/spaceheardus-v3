@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Field } from '@/components/admin/AdminFormFields'
 import { AdminPanelNav } from '@/components/admin/AdminPanelNav'
 import { type GalleryPageContent, type GalleryPhoto, type GalleryVideo } from '@/lib/galleryPageContent'
+import { resolveRepoAssetUrl } from '@/lib/liveContent'
 
 type ContentResponse = {
   error?: string
@@ -403,7 +404,7 @@ export default function AdminGalleryPage() {
 
               <div className="mt-5 space-y-5">
                 {content.photos.map((photo, index) => {
-                  const previewImage = photoPreviews[photo.id] || photo.src
+                  const previewImage = photoPreviews[photo.id] || resolveRepoAssetUrl(photo.src)
                   const uploadKey = `photo-${index}`
 
                   return (

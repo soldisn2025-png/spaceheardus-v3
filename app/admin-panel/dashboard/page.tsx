@@ -4,6 +4,7 @@ import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Field } from '@/components/admin/AdminFormFields'
 import { AdminPanelNav } from '@/components/admin/AdminPanelNav'
+import { resolveRepoAssetUrl } from '@/lib/liveContent'
 import { DEFAULT_HERO_IMAGE, type SiteContent } from '@/lib/siteContent'
 
 type ContentResponse = {
@@ -182,7 +183,7 @@ export default function AdminDashboardPage() {
     )
   }
 
-  const heroPreview = localImagePreview || content.home.heroImage || DEFAULT_HERO_IMAGE
+  const heroPreview = resolveRepoAssetUrl(localImagePreview || content.home.heroImage || DEFAULT_HERO_IMAGE)
 
   return (
     <section className="bg-[#fffdf6] px-6 py-10">
