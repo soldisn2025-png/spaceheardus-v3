@@ -1,5 +1,4 @@
 import eventsContentJson from '@/content/events.json'
-import { events } from '@/content/events'
 import { normalizeEventsContent } from '@/lib/eventsContent'
 import rawSiteContent from '@/content/site-content.json'
 import { normalizeSiteContent } from '@/lib/siteContent'
@@ -36,7 +35,7 @@ export default function EventsPage() {
           </div>
 
           <div className="grid gap-6">
-            {events.map((event) => (
+            {scheduleContent.events.map((event) => (
               <div
                 key={event.id}
                 className="flex flex-col md:flex-row gap-6 items-start md:items-center p-6 rounded-2xl bg-white border border-amber-100 shadow-sm"
@@ -45,11 +44,31 @@ export default function EventsPage() {
                   <span className="text-amber-700 font-bold text-sm font-inter leading-tight">{event.date}</span>
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-playfair text-xl text-stone-900 font-bold mb-1">{event.title}</h3>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <h3 className="font-playfair text-xl text-stone-900 font-bold">{event.title}</h3>
+                    {event.isComingSoon ? (
+                      <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-amber-700">
+                        Coming Soon
+                      </span>
+                    ) : null}
+                  </div>
                   <p className="text-amber-700 text-sm font-inter mb-1">{event.time}</p>
-                  <p className="text-stone-600 text-sm font-inter mb-2">{event.location}</p>
+                  <p className="text-stone-600 text-sm font-inter">
+                    {event.location}
+                    {event.locationDetail ? `, ${event.locationDetail}` : ''}
+                  </p>
                   <p className="text-stone-600 font-inter text-sm">{event.description}</p>
                 </div>
+                {event.rsvpLink ? (
+                  <a
+                    href={event.rsvpLink}
+                    target={event.rsvpLink.startsWith('/') ? undefined : '_blank'}
+                    rel={event.rsvpLink.startsWith('/') ? undefined : 'noopener noreferrer'}
+                    className="inline-flex shrink-0 rounded-full border-2 border-amber-500 px-5 py-2.5 text-sm font-semibold text-amber-700 transition hover:bg-amber-50"
+                  >
+                    {event.rsvpLabel || 'Details'}
+                  </a>
+                ) : null}
               </div>
             ))}
           </div>

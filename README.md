@@ -52,6 +52,8 @@ When an admin uploads a new homepage image, it is committed to `public/images/ad
 When an admin saves the form, `content/site-content.json` is committed to GitHub and your deploy pipeline can publish it automatically.
 The public contact forms send email through the app using the recipient addresses saved in `content/site-content.json`.
 
+For automatic Cloudflare deploys after each admin save, add `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` as GitHub repository secrets and enable `.github/workflows/deploy-worker.yml`.
+
 See `ADMIN.md` for the setup walkthrough.
 
 ## Cloudflare deploy

@@ -27,6 +27,7 @@ collections:
         fields:
           - { label: Hero title, name: heroTitle, widget: string }
           - { label: Hero subtitle, name: heroSubtitle, widget: text }
+          - { label: Hero image, name: heroImage, widget: image }
           - { label: Mission title, name: missionTitle, widget: string }
           - { label: Mission text, name: missionText, widget: text }
           - { label: Featured video title, name: featuredVideoTitle, widget: string }
@@ -80,6 +81,20 @@ collections:
     label: Schedule Events
     file: "content/events.json"
     fields:
+      - label: Schedule page
+        name: page
+        widget: object
+        fields:
+          - { label: Badge, name: badge, widget: string }
+          - { label: Page title, name: title, widget: string }
+          - { label: Intro text, name: intro, widget: text }
+          - { label: Rehearsal label, name: rehearsalLabel, widget: string }
+          - { label: Rehearsal title, name: rehearsalTitle, widget: string }
+          - { label: Rehearsal time, name: rehearsalTime, widget: string }
+          - { label: Performances heading, name: performancesTitle, widget: string }
+          - { label: Performances intro, name: performancesIntro, widget: text }
+          - { label: Volunteer heading, name: volunteerTitle, widget: string }
+          - { label: Volunteer text, name: volunteerText, widget: text }
       - label: Events
         name: events
         widget: list

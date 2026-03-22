@@ -147,7 +147,7 @@ export default function AdminDashboardPage() {
         return
       }
 
-      setSuccess('Saved and published. Your site should redeploy in about a minute.')
+      setSuccess('Saved to GitHub. Your live site will update after the next deployment finishes.')
       await loadContent()
     } catch {
       setError('Could not save the homepage settings.')

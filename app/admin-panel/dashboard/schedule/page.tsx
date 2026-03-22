@@ -155,7 +155,7 @@ export default function AdminSchedulePage() {
         return
       }
 
-      setSuccess('Saved and published. Your site should redeploy in about a minute.')
+      setSuccess('Saved to GitHub. Your live site will update after the next deployment finishes.')
       await loadContent()
     } catch {
       setError('Could not save the schedule settings.')
@@ -264,6 +264,7 @@ export default function AdminSchedulePage() {
                       <Field label="Date" value={event.date} onChange={(value) => updateEvent(index, 'date', value)} />
                       <Field label="Time" value={event.time} onChange={(value) => updateEvent(index, 'time', value)} />
                       <Field label="Location" value={event.location} onChange={(value) => updateEvent(index, 'location', value)} />
+                      <Field label="Location detail" value={event.locationDetail ?? ''} onChange={(value) => updateEvent(index, 'locationDetail', value)} />
                       <SelectField
                         label="Type"
                         value={event.type}
