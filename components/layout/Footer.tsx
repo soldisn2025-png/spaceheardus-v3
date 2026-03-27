@@ -88,7 +88,7 @@ export function Footer() {
         <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-stone-200 pt-8 sm:flex-row">
           <div className="flex flex-col items-center gap-1 sm:items-start">
             <p className="text-sm text-stone-500">© {year} {site.name}. All rights reserved.</p>
-            <a href="mailto:hello@spaceheardus.org" className="text-sm text-stone-500 hover:text-amber-600">hello@spaceheardus.org</a>
+            <a href="mailto:admin@spaceheardus.org" className="text-sm text-stone-500 hover:text-amber-600">admin@spaceheardus.org</a>
           </div>
           <div className="flex gap-6 text-sm text-stone-500">
             {navigation.main.map((item) => {

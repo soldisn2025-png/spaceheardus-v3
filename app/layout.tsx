@@ -63,7 +63,7 @@ const organizationSchema = {
       description:
         'Space Heard Us is an inclusive youth nonprofit band in Fairfax, Virginia. We celebrate the gifts of children with disabilities through the power of music.',
       foundingDate: '2023-12',
-      email: 'hello@spaceheardus.org',
+      email: 'admin@spaceheardus.org',
       address: {
         '@type': 'PostalAddress',
         addressLocality: 'Fairfax',

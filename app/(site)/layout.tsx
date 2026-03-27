@@ -20,7 +20,7 @@ export default async function SiteLayout({
       <footer className="border-t border-amber-200 py-10 text-center text-sm text-stone-600 font-inter">
         <p>Copyright {new Date().getFullYear()} Space Heard Us | Youth Nonprofit Band | Fairfax, VA | All Rights Reserved</p>
         <p className="mt-2">
-          <a href="mailto:hello@spaceheardus.org" className="hover:text-amber-600 transition">hello@spaceheardus.org</a>
+          <a href="mailto:admin@spaceheardus.org" className="hover:text-amber-600 transition">admin@spaceheardus.org</a>
         </p>
         <p className="mt-2">
           <Link href="/admin-panel" className="text-stone-400 transition hover:text-stone-700">

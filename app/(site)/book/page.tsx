@@ -58,8 +58,8 @@ export default function BookPage() {
         <div className="max-w-xl mx-auto">
           <p className="text-stone-600 font-inter mb-2">
             Have a quick question? Reach us directly at{' '}
-            <a href="mailto:hello@spaceheardus.org" className="text-amber-700 font-semibold hover:underline">
-              hello@spaceheardus.org
+            <a href="mailto:admin@spaceheardus.org" className="text-amber-700 font-semibold hover:underline">
+              admin@spaceheardus.org
             </a>
           </p>
           <p className="text-stone-500 font-inter text-sm">
