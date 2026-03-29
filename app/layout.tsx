@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Playfair_Display, Inter } from 'next/font/google'
+import { Inter, Playfair_Display } from 'next/font/google'
 import './globals.css'
 
 const playfair = Playfair_Display({
@@ -17,7 +17,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Space Heard Us | Inclusive Youth Nonprofit Band in Fairfax, VA',
   description:
-    'Space Heard Us is an inclusive youth nonprofit band in Fairfax, Virginia. Eric and Kaden — musicians with autism — perform at churches, hospitals, daycares, and community events across Northern Virginia. Book a performance or find inspiration for your family.',
+    'Space Heard Us is an inclusive youth nonprofit band in Fairfax, Virginia. Eric and Kaden, musicians with autism, perform at churches, hospitals, daycares, and community events across Northern Virginia. Book a performance or find inspiration for your family.',
   keywords: [
     'youth band Fairfax VA',
     'inclusive music Fairfax Virginia',
@@ -32,8 +32,8 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Space Heard Us | Inclusive Youth Nonprofit Band in Fairfax, VA',
     description:
-      'Eric and Kaden — musicians with autism — perform for communities across Northern Virginia, proving that every voice deserves to be heard.',
-    images: [{ url: '/images/group.jpg', width: 1200, height: 630, alt: 'Space Heard Us band performing' }],
+      'Eric and Kaden, musicians with autism, perform for communities across Northern Virginia, proving that every voice deserves to be heard.',
+    images: [{ url: '/images/home/group-picture.jpg', width: 1200, height: 630, alt: 'Space Heard Us band performing' }],
     type: 'website',
     locale: 'en_US',
     siteName: 'Space Heard Us',
@@ -42,8 +42,8 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Space Heard Us | Inclusive Youth Nonprofit Band',
     description:
-      'Youth nonprofit band in Fairfax, VA — performing at churches, hospitals, daycares across Northern Virginia.',
-    images: ['/images/group.jpg'],
+      'Youth nonprofit band in Fairfax, VA, performing at churches, hospitals, and daycares across Northern Virginia.',
+    images: ['/images/home/group-picture.jpg'],
   },
   alternates: {
     canonical: 'https://spaceheardus.org',
@@ -58,8 +58,8 @@ const organizationSchema = {
       '@id': 'https://spaceheardus.org/#organization',
       name: 'Space Heard Us',
       url: 'https://spaceheardus.org',
-      logo: 'https://spaceheardus.org/images/logo.jpg',
-      image: 'https://spaceheardus.org/images/group.jpg',
+      logo: 'https://spaceheardus.org/images/branding/yellow-logo.png',
+      image: 'https://spaceheardus.org/images/home/group-picture.jpg',
       description:
         'Space Heard Us is an inclusive youth nonprofit band in Fairfax, Virginia. We celebrate the gifts of children with disabilities through the power of music.',
       foundingDate: '2023-12',
@@ -81,7 +81,7 @@ const organizationSchema = {
       '@id': 'https://spaceheardus.org/#musicgroup',
       name: 'Space Heard Us',
       url: 'https://spaceheardus.org',
-      image: 'https://spaceheardus.org/images/group.jpg',
+      image: 'https://spaceheardus.org/images/home/group-picture.jpg',
       description: 'An inclusive youth music group featuring musicians with autism based in Fairfax, Virginia.',
       genre: ['Classical', 'Contemporary'],
       foundingLocation: {
@@ -105,9 +105,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
       </head>
-      <body className="bg-[#fffdf6] text-stone-900 antialiased">
-        {children}
-      </body>
+      <body className="text-stone-900 antialiased">{children}</body>
     </html>
   )
 }

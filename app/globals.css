@@ -5,6 +5,13 @@
 :root {
   --font-playfair: 'Playfair Display', serif;
   --font-inter: 'Inter', sans-serif;
+  --brand-yellow: #f3d35f;
+  --section-cream: #fff8ee;
+  --section-apricot: #fff1df;
+  --section-blue: #eaf4f6;
+  --section-green: #edf6df;
+  --text-strong: #2d2216;
+  --text-muted: #6f5e4d;
 }
 
 * {
@@ -18,8 +25,8 @@ html {
 }
 
 body {
-  background: radial-gradient(1200px 600px at 50% -10%, #fff5cc 0%, #fff9ea 45%, #fffdf6 100%);
-  color: #2a2114;
+  background: linear-gradient(180deg, #fff4cc 0%, #fffaf0 24%, #fffdf8 100%);
+  color: var(--text-strong);
   font-family: var(--font-inter);
 }
 

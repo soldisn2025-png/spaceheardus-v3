@@ -1,22 +1,22 @@
 {
   "site": {
-    "description": "We are a youth nonprofit band on a mission to spread joy through music and support those in need.",
-    "logo": "/images/logo.jpg",
+    "description": "Space Heard Us is a youth nonprofit band sharing welcoming performances that celebrate children with disabilities and bring communities together through music.",
+    "logo": "/images/branding/yellow-logo.png",
     "name": "Space Heard Us",
     "tagline": "Music That Moves Hearts"
   },
   "home": {
-    "contactText": "Send us a message for performances, collaboration, or volunteer questions.",
-    "contactTitle": "Contact Us",
+    "contactText": "Reach out for performances, partnerships, donations, or volunteer opportunities.",
+    "contactTitle": "Bring Space Heard Us to Your Community",
     "featuredVideoTitle": "Featured Performance",
     "featuredVideoUrl": "https://www.youtube.com/watch?v=YgGG5xiYxWw",
-    "heroImage": "/images/admin/1774789255442-slow-transition-slideshow-optimized.gif",
-    "heroSubtitle": "Space Heard Us is an inclusive youth nonprofit band in Northern Virginia, and bring hope to the community!",
+    "heroImage": "/images/home/group-picture.jpg",
+    "heroSubtitle": "Space Heard Us is a youth nonprofit band in Northern Virginia sharing joyful, inclusive performances that help every child feel seen, valued, and heard.",
     "heroTitle": "Music That Moves Hearts",
-    "missionText": "The name Space Heard Us reflects our belief that every child deserves to be seen, valued, and heard. We believe that music has no barriers—it brings people together beyond words, differences, and limitations.",
-    "missionTitle": "Our Mission",
-    "volunteerText": "Join our team of volunteers and be part of something meaningful.",
-    "volunteerTitle": "Want to Help?"
+    "missionText": "Space Heard Us began with a simple belief: every child deserves to be seen, valued, and heard. Through performances at churches, hospitals, daycares, and community gatherings, we create welcoming spaces where music builds connection, confidence, and hope.",
+    "missionTitle": "Where Every Voice Is Heard",
+    "volunteerText": "Volunteer with event setup, hospitality, photography, or simple encouragement as we bring more performances into the community.",
+    "volunteerTitle": "Help Us Share More Music"
   },
   "settings": {
     "bookingFormRecipientEmail": "solkim130@gmail.com",
