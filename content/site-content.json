@@ -1,28 +1,26 @@
-﻿{
+{
   "site": {
-    "name": "Space Heard Us",
-    "tagline": "Music That Moves Hearts",
     "description": "We are a youth nonprofit band on a mission to spread joy through music and support those in need.",
-    "logo": "/images/logo.jpg"
+    "logo": "/images/logo.jpg",
+    "name": "Space Heard Us",
+    "tagline": "Music That Moves Hearts"
   },
   "home": {
-    "heroTitle": "Music That Moves Hearts",
-    "heroSubtitle": "Space Heard Us is an inclusive youth nonprofit band in Fairfax, VA, using music to celebrate every child's gifts, bring hope to the community, and remind Northern Virginia that every voice matters.",
-    "heroImage": "/images/hero/main-photo.png",
-    "missionTitle": "Our Mission",
-    "missionText": "We believe music has the power to heal, connect, and transform. Through performances and community events, we bring joy to those who need it most.",
+    "contactText": "Send us a message for performances, collaboration, or volunteer questions.",
+    "contactTitle": "Contact Us",
     "featuredVideoTitle": "Featured Performance",
     "featuredVideoUrl": "https://www.youtube.com/watch?v=oxEf0g8dNFU&list=PLDvad3co7K4iDnqgwv1mUq7f5hnjLGwVV",
-    "volunteerTitle": "Want to Help?",
+    "heroImage": "/images/hero/main-photo.png",
+    "heroSubtitle": "Space Heard Us is an inclusive youth nonprofit band in Fairfax, VA, using music to celebrate every child's gifts, bring hope to the community, and remind Northern Virginia that every voice matters.",
+    "heroTitle": "Music That Moves Hearts",
+    "missionText": "Music Beyond Barriers\nSpace Heard Us brings children together to share hope, joy, and connection through music.\nWe believe every child has a voice worth hearing.",
+    "missionTitle": "Our Mission",
     "volunteerText": "Join our team of volunteers and be part of something meaningful.",
-    "contactTitle": "Contact Us",
-    "contactText": "Send us a message for performances, collaboration, or volunteer questions."
+    "volunteerTitle": "Want to Help?"
   },
   "settings": {
-    "volunteerFormUrl": "https://www.signupgenius.com/go/your-actual-form",
+    "bookingFormRecipientEmail": "solkim130@gmail.com",
     "landingFormRecipientEmail": "solkim130@gmail.com",
-    "bookingFormRecipientEmail": "solkim130@gmail.com"
+    "volunteerFormUrl": "https://www.signupgenius.com/go/your-actual-form"
   }
 }
-
-
